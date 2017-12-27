@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BaseAnimationViewController">
+            <connections>
+                <outlet property="animationView" destination="jqH-0f-XQA" id="q0q-qy-RXx"/>
+                <outlet property="arrowImgView" destination="XaW-HL-TgF" id="l1d-rd-IAY"/>
+                <outlet property="heartImgView" destination="500-TL-d6N" id="wob-wz-W29"/>
+                <outlet property="kiteImgView" destination="abf-JQ-4ti" id="ae1-8b-uFz"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="heart.png" translatesAutoresizingMaskIntoConstraints="NO" id="500-TL-d6N">
+                    <rect key="frame" x="52" y="80" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="500-TL-d6N" secondAttribute="height" multiplier="1:1" id="UUf-Ao-hbG"/>
+                        <constraint firstAttribute="width" constant="50" id="b0s-RZ-68p"/>
+                        <constraint firstAttribute="height" constant="50" id="wBa-9B-lvG"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow.png" translatesAutoresizingMaskIntoConstraints="NO" id="XaW-HL-TgF">
+                    <rect key="frame" x="24" y="210" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="XaW-HL-TgF" secondAttribute="height" multiplier="1:1" id="0s2-Qf-4YS"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="fyD-Aj-Yhk"/>
+                        <constraint firstAttribute="height" constant="50" id="heH-84-TS1"/>
+                        <constraint firstAttribute="width" constant="50" id="ou8-58-2jn"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="fengche.png" translatesAutoresizingMaskIntoConstraints="NO" id="abf-JQ-4ti">
+                    <rect key="frame" x="273" y="80" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="Caf-dF-TQD"/>
+                        <constraint firstAttribute="width" constant="50" id="N7R-Ch-brw"/>
+                        <constraint firstAttribute="width" secondItem="abf-JQ-4ti" secondAttribute="height" multiplier="1:1" id="yzB-AO-nRw"/>
+                    </constraints>
+                </imageView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jqH-0f-XQA">
+                    <rect key="frame" x="137.5" y="367" width="100" height="100"/>
+                    <color key="backgroundColor" red="0.14902000000000001" green="0.89757143230000003" blue="0.93850567709999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="jqH-0f-XQA" secondAttribute="height" id="6ug-1a-l7B"/>
+                        <constraint firstAttribute="height" constant="100" id="L3s-qZ-Ma4"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Geh-tL-JRw">
+                    <rect key="frame" x="52" y="571" width="46" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="透明度"/>
+                    <connections>
+                        <action selector="alphaAnimation:" destination="-1" eventType="touchUpInside" id="Kp1-fP-HAK"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nYK-cu-OfX">
+                    <rect key="frame" x="162" y="571" width="51" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="3D旋转"/>
+                    <connections>
+                        <action selector="DRotationAction:" destination="-1" eventType="touchUpInside" id="sto-lC-yGM"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUK-As-R1d">
+                    <rect key="frame" x="292" y="571" width="31" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="圆角"/>
+                    <connections>
+                        <action selector="roundCornerAction:" destination="-1" eventType="touchUpInside" id="a7G-jD-gLI"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="500-TL-d6N" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="52" id="VwT-AU-Tfo"/>
+                <constraint firstAttribute="bottom" secondItem="jqH-0f-XQA" secondAttribute="bottom" constant="200" id="W4l-aA-WHT"/>
+                <constraint firstAttribute="trailing" secondItem="abf-JQ-4ti" secondAttribute="trailing" constant="52" id="dio-Pu-ZO9"/>
+                <constraint firstItem="jqH-0f-XQA" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="mT8-ly-3et"/>
+                <constraint firstItem="abf-JQ-4ti" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="80" id="oW0-6y-jeg"/>
+                <constraint firstItem="500-TL-d6N" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="80" id="rEc-IL-p2y"/>
+                <constraint firstItem="XaW-HL-TgF" firstAttribute="top" secondItem="500-TL-d6N" secondAttribute="bottom" constant="80" id="ug8-Ue-aIl"/>
+                <constraint firstItem="XaW-HL-TgF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="24" id="xj1-X7-LFD"/>
+            </constraints>
+            <point key="canvasLocation" x="107.5" y="129.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow.png" width="200" height="200"/>
+        <image name="fengche.png" width="200" height="200"/>
+        <image name="heart.png" width="200" height="200"/>
+    </resources>
+</document>
