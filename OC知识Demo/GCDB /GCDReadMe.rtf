@@ -1,0 +1,1484 @@
+{\rtf1\ansi\ansicpg936\cocoartf1561
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset134 PingFangSC-Regular;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red251\green2\blue7;\red46\green13\blue110;\red255\green255\blue255;
+\red0\green0\blue0;\red0\green11\blue255;\red29\green133\blue25;\red180\green0\blue98;\red92\green38\blue153;
+\red186\green0\blue17;\red100\green56\blue32;\red77\green0\blue158;\red251\green2\blue7;}
+{\*\expandedcolortbl;;\cssrgb\c100000\c14913\c0;\csgenericrgb\c18100\c5200\c43100;\csgenericrgb\c100000\c100000\c100000;
+\csgenericrgb\c0\c0\c0;\csgenericrgb\c0\c4459\c99822;\csgenericrgb\c11489\c52197\c9852;\csgenericrgb\c70682\c0\c38264;\csgenericrgb\c35900\c14900\c60100;
+\csgenericrgb\c72768\c0\c6662;\csgenericrgb\c39100\c22000\c12500;\csgenericrgb\c30278\c0\c61966;\cssrgb\c100000\c14913\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww16080\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs28 \cf0  \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\qc\partightenfactor0
+
+\fs48 \cf0 Grand Central Dispatch\
+
+\fs28 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs36 \cf0 1 
+\f1 \'b8\'c5\'d2\'aa  \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0    1.1 \'ca\'b2\'c3\'b4\'ca\'c7 GCD \
+   1.2 \'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\
+
+\fs36 2 GCD API  \
+
+\fs28    2.1 Dispatch Queue\
+   2.2 dispatch_queue_create\
+   2.3 Main Dispatch Queue/Global Dispatch Queue\
+   2.4 dispatch_set_target_queue\
+   2.5 dispatch_after\
+   2.6 Dispatch Group\
+   2.7 dispatch_barrier_async\
+   2.8 dispatch_sync\
+   2.9 dispatch_apply\
+   2.10 dispatch_suspend / dispatch_resume\
+   2.11 Dispatch Semaphore\
+   2.12 dispatch_once\
+   2.13 Dispatch I/O\
+
+\fs36 3 GCD \'ca\'b5\'cf\'d6\
+
+\fs28     1. Dispatch Queue\
+    2. Dispatch Source\
+\
+
+\fs36 \cf2 1.1   \'ca\'b2\'c3\'b4\'ca\'c7 GCD\
+
+\fs28 \cf0        Grand Central Dispatch \'a3\'a8GCD\'a3\'a9\'ca\'c7\'d2\'ec\'b2\'bd\'d6\'b4\'d0\'d0\'c8\'ce\'ce\'f1\'b5\'c4\'bc\'bc\'ca\'f5\'d6\'ae\'d2\'bb\'a1\'a3\'d2\'bb\'b0\'e3\'bd\'ab\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d6\'d0\'bc\'c7\'ca\'f6\'b5\'c4\'cf\'df\'b3\'cc\'b9\'dc\'c0\'ed\'d3\'c3\'b5\'c4\'b4\'fa\'c2\'eb\'d4\'da\'cf\'b5\'cd\'b3\'bc\'b6\'d6\'d0\'ca\'b5\'cf\'d6\'a1\'a3\'bf\'aa\'b7\'a2\'d5\'df\'d6\'bb\'d0\'e8\'d2\'aa\'b6\'a8\'d2\'e5\'cf\'eb\'d6\'b4\'d0\'d0\'b5\'c4\'c8\'ce\'ce\'f1\'b2\'a2\'d7\'b7\'bc\'d3\'b5\'bd\'ca\'ca\'b5\'b1\'b5\'c4 Dispatch  Queue \'d6\'d0\'a3\'acGCD \'be\'cd\'c4\'dc\'c9\'fa\'b3\'c9\'b1\'d8\'d2\'aa\'b5\'c4\'cf\'df\'b3\'cc\'b2\'a2\'bc\'c6\'bb\'ae\'d6\'b4\'d0\'d0\'c8\'ce\'ce\'f1\'a1\'a3\'d3\'c9\'d3\'da\'cf\'df\'b3\'cc\'b9\'dc\'c0\'ed\'ca\'c7\'d7\'f7\'ce\'aa\'cf\'b5\'cd\'b3\'b5\'c4\'d2\'bb\'b2\'bf\'b7\'d6\'c0\'b4\'ca\'b5\'cf\'d6\'b5\'c4\'a3\'ac\'d2\'f2\'b4\'cb\'bf\'c9\'d2\'d4\'cd\'b3\'d2\'bb\'b9\'dc\'c0\'ed\'a3\'ac\'d2\'b2\'bf\'c9\'d6\'b4\'d0\'d0\'c8\'ce\'ce\'f1\'a1\'a3\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf3 \cb4  dispatch_async\cf5 (\cf3 dispatch_get_global_queue\cf5 (\cf6 0\cf5 , \cf6 0\cf5 ), ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'b3\'a4\'ca\'b1\'bc\'e4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             
+\f1 \'c0\'fd\'c8\'e7\'a3\'ba
+\f2 AR 
+\f1 \'d3\'c3\'bb\'ad\'cf\'f1\'ca\'b6\'b1\'f0\'a1\'a2\'ca\'fd\'be\'dd\'bf\'e2\'b7\'c3\'ce\'ca\'b5\'c8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'b3\'a4\'ca\'b1\'bc\'e4\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'a3\'ac\'d6\'f7\'cf\'df\'b3\'cc\'ca\'b9\'d3\'c3\'b8\'c3\'b4\'a6\'c0\'ed\'bd\'e1\'b9\'fb
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_async\cf5 (\cf3 dispatch_get_main_queue\cf5 (), ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5               \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                * 
+\f1 \'d6\'bb\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'bf\'c9\'d2\'d4\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                * 
+\f1 \'c0\'fd\'c8\'e7\'a3\'ba
+\f2  
+\f1 \'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'b8\'fc\'d0\'c2
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5  \});
+\f1\fs28 \cf0 \cb1 \
+\
+\'c9\'cf\'c3\'e6\'b5\'c4\'be\'cd\'ca\'c7\'d4\'da\'ba\'f3\'cc\'a8\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'b3\'a4\'ca\'b1\'bc\'e4\'b4\'a6\'c0\'ed\'a3\'ac\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'ca\'b1\'a3\'ac\'d6\'f7\'cf\'df\'b3\'cc\'ca\'b9\'d3\'c3\'b8\'c3\'b4\'a6\'c0\'ed\'bd\'e1\'b9\'fb\'a1\'a3\
+\
+\'d4\'da GCD \'d6\'ae\'c7\'b0\'a3\'acCocoa \'bf\'f2\'bc\'dc\'cc\'e1\'b9\'a9\'c1\'cb NSObject \'c0\'e0\'b5\'c4 performSelectorInBackground\'a3\'bawithObject\'a3\'ba\'ca\'b5\'c0\'fd\'b7\'bd\'b7\'a8\'ba\'cd performSelectorOnMainThread \'ca\'b5\'c0\'fd\'b7\'bd\'b7\'a8\'b5\'c8\'bc\'f2\'b5\'a5\'b5\'c4\'b9\'fd\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'bc\'bc\'ca\'f5\'a1\'a3\
+\
+
+\f2\fs22 \cf7 \cb4 /**
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7  * NSObject performSelectorInBackground: withObject: 
+\f1 \'b7\'bd\'b7\'a8\'d6\'d0\'d6\'b4\'d0\'d0\'ba\'f3\'cc\'a8\'cf\'df\'b3\'cc
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7  */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5 - (\cf8 void\cf5 )launchThreadByNSObject_performSelectorInbackground_withObject \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5     [\cf8 self\cf5  \cf3 performSelectorInBackground\cf5 :\cf8 @selector\cf5 (doWork) \cf3 withObject\cf5 :\cf8 nil\cf5 ];
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5 \}
+\f0\fs24 \cf0 \
+\
+
+\f2\fs22 \cf7 /**
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7  * 
+\f1 \'ba\'f3\'cc\'a8\'cf\'df\'b3\'cc\'b4\'a6\'c0\'ed\'b7\'bd\'b7\'a8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7  */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5 - (\cf8 void\cf5 )doWork \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5     \cf8 @autoreleasepool\cf5  \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * 
+\f1 \'b3\'a4\'ca\'b1\'bc\'e4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          
+\f1 \'c0\'fd\'c8\'e7\'a3\'ba
+\f2 AR 
+\f1 \'d3\'c3\'bb\'ad\'cf\'f1\'ca\'b6\'b1\'f0\'a1\'a2\'ca\'fd\'be\'dd\'bf\'e2\'b7\'c3\'ce\'ca\'b5\'c8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * 
+\f1 \'b3\'a4\'ca\'b1\'bc\'e4\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'a3\'ac\'d6\'f7\'cf\'df\'b3\'cc\'ca\'b9\'d3\'c3\'b8\'c3\'b4\'a6\'c0\'ed\'bd\'e1\'b9\'fb
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         [\cf8 self\cf5  \cf3 performSelectorOnMainThread\cf5 :\cf8 @selector\cf5 (doneWork) \cf3 withObject\cf5 :\cf8 nil\cf5  \cf3 waitUntilDone\cf5 :\cf8 NO\cf5 ];
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5     \}
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5 \}
+\f0\fs24 \cf0 \
+\
+\
+
+\f2\fs22 \cf7 /**
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7  * 
+\f1 \'d6\'f7\'cf\'df\'b3\'cc\'b4\'a6\'c0\'ed\'b7\'bd\'b7\'a8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7  */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5 - (\cf8 void\cf5 )doneWork \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5     \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7      * 
+\f1 \'d6\'bb\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'bf\'c9\'d2\'d4\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7      
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7      * 
+\f1 \'c0\'fd\'c8\'e7\'a3\'ba
+\f2  
+\f1 \'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'b8\'fc\'d0\'c2
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7      */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5 \}\
+\
+\
+\
+
+\fs36 \cf2 1.2 
+\f1 \'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\
+
+\fs22 \cf5       \
+      \'d4\'da Objective-C \'b5\'c4 if \'d3\'ef\'be\'e4 \'ba\'cd for \'d3\'ef\'be\'e4\'b5\'c8\'bf\'d8\'d6\'c6\'d3\'ef\'be\'e4\'bb\'f2\'ba\'af\'ca\'fd\'b5\'f7\'d3\'c3\'b5\'c4\'c7\'e9\'bf\'f6\'cf\'c2\'a3\'ac\'d6\'b4\'d0\'d0\'c3\'fc\'c1\'ee\'c1\'d0\'b5\'c4\'b5\'d8\'d6\'b7\'bb\'e1\'d4\'b6\'c0\'eb\'b5\'b1\'c7\'b0\'b5\'c4\'ce\'bb\'d6\'c3\'a3\'a8\'ce\'bb\'d6\'c3\'c7\'a8\'d2\'c6\'a3\'a9\'a1\'a3\'b5\'ab\'ca\'c7\'a3\'ac\'d3\'c9\'d3\'da\'d2\'bb\'b8\'f6 CPU \'d2\'bb\'b4\'ce\'d6\'bb\'c4\'dc\'d6\'b4\'d0\'d0\'d2\'bb\'b8\'f6\'c3\'fc\'c1\'ee\'a3\'ac\'b2\'bb\'c4\'dc\'d6\'b4\'d0\'d0\'c4\'b3\'b4\'a6\'b7\'d6\'bf\'aa\'b5\'c4\'b2\'a2\'c1\'d0\'b5\'c4\'c1\'bd\'b8\'f6\'c3\'fc\'c1\'ee\'a3\'ac\'d2\'f2\'b4\'cb\'cd\'a8\'b9\'fd CPU \'d6\'b4\'d0\'d0\'b5\'c4 CPU \'c3\'fc\'c1\'ee\'c1\'d0\'be\'cd\'ba\'c3\'b1\'c8\'d2\'bb\'cc\'f5\'ce\'de\'b7\'d6\'b2\'e6\'b5\'c4\'b4\'f3\'b5\'c0\'a3\'ac\'c6\'e4\'d6\'b4\'d0\'d0\'b2\'bb\'bb\'e1\'b3\'f6\'cf\'d6\'b7\'d6\'c6\'e7\'a1\'a3\
+\
+      \'d5\'e2\'c0\'ef\'cb\'f9\'cb\'b5\'b5\'c4 \'a1\'b0\'d2\'bb\'b8\'f6 CPU \'d6\'b4\'d0\'d0\'b5\'c4 CPU \'c3\'fc\'c1\'ee\'c1\'d0\'ce\'aa\'d2\'bb\'cc\'f5\'ce\'de\'b7\'d6\'b2\'e6\'c2\'b7\'be\'b6\'a1\'b1 \'bc\'b4\'ce\'aa \'a1\'b0\'cf\'df\'b3\'cc\'a1\'b1\'a1\'a3\
+      \'cf\'d6\'d4\'da\'d2\'bb\'b8\'f6\'ce\'ef\'c0\'ed CPU \'d0\'be\'c6\'ac\'ca\'b5\'bc\'ca\'c9\'cf\'d3\'d0 64\'b8\'f6\'a3\'a864\'ba\'cb\'a3\'a9CPU\'a3\'ac\'c8\'e7\'b9\'fb 1 \'b8\'f6 CPU \'ba\'cb\'d0\'e9\'c4\'e2\'ce\'aa\'c1\'bd\'b8\'f6 CPU \'ba\'cb\'b9\'a4\'d7\'f7\'a3\'ac\'c4\'c7\'c3\'b4\'d2\'bb\'cc\'a8\'bc\'c6\'cb\'e3\'bb\'fa\'c9\'cf\'ca\'b9\'d3\'c3\'b6\'e0\'b8\'f6 CPU \'ba\'cb\'be\'cd\'ca\'c7\'c0\'ed\'cb\'f9\'b5\'b1\'c8\'bb\'b5\'c4\'ca\'c2\'c1\'cb\'a1\'a3\'be\'a1\'b9\'dc\'c8\'e7\'b4\'cb\'a3\'ac\'a1\'b01 \'b8\'f6 CPU \'ba\'cb\'d6\'b4\'d0\'d0\'b5\'c4 CPU \'c3\'fc\'c1\'ee\'c1\'d0\'ce\'aa\'d2\'bb\'cc\'f5\'ce\'de\'b7\'d6\'b2\'e6\'c2\'b7\'be\'b6\'a1\'b1 \'c8\'d4\'c8\'bb\'b2\'bb\'b1\'e4\'a1\'a3\
+  \'d5\'e2\'d6\'d6\'ce\'de\'b7\'d6\'b2\'e6\'c2\'b7\'be\'b6\'b4\'e6\'d4\'da\'b6\'e0\'cc\'f5\'ca\'b1\'bc\'b4\'ce\'aa \'a1\'b0\'b6\'e0\'cf\'df\'b3\'cc\'a1\'b1\'a1\'a3\'d4\'da\'b6\'e0\'cf\'df\'b3\'cc\'d6\'d0\'a3\'ac1 \'b8\'f6 CPU \'ba\'cb\'d6\'b4\'d0\'d0\'b6\'e0\'cc\'f5\'b2\'bb\'cd\'ac\'c2\'b7\'be\'b6\'c9\'cf\'b5\'c4\'b2\'bb\'cd\'ac\'c3\'fc\'c1\'ee\'a1\'a3\'b5\'ab\'bb\'f9\'b1\'be\'c9\'cf 1 \'b8\'f6 CPU \'ba\'cb\'d2\'bb\'b4\'ce\'c4\'dc\'b9\'bb\'d6\'b4\'d0\'d0\'b5\'c4 CPU \'c3\'fc\'c1\'ee\'ca\'bc\'d6\'d5\'ce\'aa 1\'a1\'a3\'c4\'c7\'c3\'b4\'d4\'f5\'d1\'f9\'b2\'c5\'c4\'dc\'d4\'da\'b6\'e0\'cc\'f5\'c2\'b7\'be\'b6\'d6\'d0\'d6\'b4\'d0\'d0 CPU \'c3\'fc\'c1\'ee\'c4\'d8\'a3\'bf\
+ \
+      OSX \'ba\'cd iOS \'b5\'c4\'ba\'cb\'d0\'c4 XNU \'c4\'da\'ba\'cb\'d4\'da\'b7\'a2\'c9\'fa\'b2\'d9\'d7\'f7\'cf\'b5\'cd\'b3\'ca\'c2\'bc\'fe\'ca\'b1\'a3\'a8\'c8\'e7\'c3\'bf\'b8\'f4\'d2\'bb\'b6\'a8\'ca\'b1\'bc\'e4\'a3\'ac\'bb\'bd\'c6\'f0\'cf\'b5\'cd\'b3\'b5\'f7\'d3\'c3\'b5\'c8\'c7\'e9\'bf\'f6\'a3\'a9\'bb\'e1\'c7\'d0\'bb\'bb\'d6\'b4\'d0\'d0\'c2\'b7\'be\'b6\'a1\'a3\'d6\'b4\'d0\'d0\'d6\'d0\'c2\'b7\'be\'b6\'b5\'c4\'d7\'b4\'cc\'ac\'a3\'ac\'c0\'fd\'c8\'e7 CPU \'b5\'c4\'bc\'c4\'b4\'e6\'c6\'f7\'b5\'c8\'d0\'c5\'cf\'a2\'b1\'a3\'b4\'e6\'b5\'bd\'b8\'f7\'d7\'d4\'c2\'b7\'be\'b6\'d7\'a8\'d3\'c3\'b5\'c4\'c4\'da\'b4\'e6\'bf\'e9\'d6\'d0\'a3\'ac\'b4\'d3\'c7\'d0\'bb\'bb\'c4\'bf\'b1\'ea\'c2\'b7\'be\'b6\'d7\'a8\'d3\'c3\'b5\'c4\'c4\'da\'b4\'e6\'bf\'e9\'d6\'d0\'a3\'ac\'b8\'b4\'d4\'ad CPU \'bc\'c4\'b4\'e6\'c6\'f7\'b5\'c8\'d0\'c5\'cf\'a2\'a3\'ac\'bc\'cc\'d0\'f8\'d6\'b4\'d0\'d0\'c7\'d0\'bb\'bb\'c2\'b7\'be\'b6\'b5\'c4 CPU \'c3\'fc\'c1\'ee\'c1\'d0\'a1\'a3\'d5\'e2\'b1\'bb\'b3\'c6\'ce\'aa \'a1\'b0\'c9\'cf\'cf\'c2\'ce\'c4\'c7\'d0\'bb\'bb\'a1\'b1\'a1\'a3\
+   \
+     \'d3\'c9\'d3\'da\'ca\'b9\'d3\'c3\'b6\'e0\'cf\'df\'b3\'cc\'b5\'c4\'b3\'cc\'d0\'f2\'bf\'c9\'d2\'d4\'d4\'da\'c4\'b3\'b8\'f6\'cf\'df\'b3\'cc\'ba\'cd\'c6\'e4\'cb\'fb\'cf\'df\'b3\'cc\'d6\'ae\'bc\'e4\'b7\'b4\'b8\'b4\'b6\'e0\'b4\'ce\'bd\'f8\'d0\'d0\'c9\'cf\'cf\'c2\'ce\'c4\'c7\'d0\'bb\'bb\'a3\'ac\'d2\'f2\'b4\'cb\'bf\'b4\'c9\'cf\'c8\'a5\'be\'cd\'ba\'c3\'cf\'f1 1 \'b8\'f6 CPU \'ba\'cb\'c4\'dc\'b9\'bb\'b2\'a2\'c1\'d0\'b5\'c4\'d6\'b4\'d0\'d0\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'d2\'bb\'d1\'f9\'a1\'a3\'b6\'f8\'c7\'d2\'d4\'da\'be\'df\'d3\'d0\'b6\'e0\'b8\'f6 CPU \'ba\'cb\'b5\'c4\'c7\'e9\'bf\'f6\'cf\'c2\'a3\'ac\'be\'cd\'b2\'bb\'ca\'c7\'a1\'b0\'bf\'b4\'c9\'cf\'c8\'a5\'cf\'f1\'a1\'b1\'c1\'cb\'a3\'ac\'b6\'f8\'ca\'c7\'d5\'e6\'b5\'c4\'cc\'e1\'b9\'a9\'c1\'cb\'b6\'e0\'b8\'f6 CPU \'ba\'cd\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'b5\'c4\'bc\'bc\'ca\'f5\'a1\'a3\
+     \'d5\'e2\'d6\'d6\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'b5\'c4\'bc\'bc\'ca\'f5\'be\'cd\'b1\'bb\'b3\'c6\'ce\'aa \'a1\'b0\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'a1\'b1\'a1\'a3\
+\
+    \'b5\'ab\'ca\'c7\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'ca\'b5\'bc\'ca\'c9\'cf\'ca\'c7\'d2\'bb\'d6\'d6\'d2\'d7\'b7\'a2\'c9\'fa\'b8\'f7\'d6\'d6\'ce\'ca\'cc\'e2\'b5\'c4\'b1\'e0\'b3\'cc\'bc\'bc\'ca\'f5\'a1\'a3\'b1\'c8\'c8\'e7\'a3\'ba\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'b8\'fc\'d0\'c2\'cf\'e0\'cd\'ac\'b5\'c4\'d7\'ca\'d4\'b4\'bb\'e1\'b5\'bc\'d6\'c2\'ca\'fd\'be\'dd\'b2\'bb\'d2\'bb\'d6\'c2\'a3\'a8\'ca\'fd\'be\'dd\'be\'ba\'d5\'f9\'a3\'a9\'a1\'a2\'cd\'a3\'d6\'b9\'b5\'c8\'b4\'fd\'ca\'c2\'bc\'fe\'b5\'c4\'cf\'df\'b3\'cc\'bb\'e1\'b5\'bc\'d6\'c2\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'cf\'e0\'bb\'a5\'b3\'d6\'d0\'f8\'b5\'c8\'b4\'fd\'a3\'a8\'cb\'c0\'cb\'f8\'a3\'a9\'a1\'a2\'ca\'b9\'d3\'c3\'cc\'ab\'b6\'e0\'cf\'df\'b3\'cc\'bb\'e1\'cf\'fb\'ba\'c4\'b4\'f3\'c1\'bf\'c4\'da\'b4\'e6\'b5\'c8\'a1\'a3\
+\
+    \'c8\'bb\'b6\'f8\'ca\'b9\'d3\'c3\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'bf\'c9\'d2\'d4\'b1\'a3\'d6\'a4\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'b5\'c4\'cf\'ec\'d3\'a6\'d0\'d4\'c4\'dc\'a1\'a3\
+     \'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d4\'da\'c6\'f4\'b6\'af\'ca\'b1\'a3\'ac\'cd\'a8\'b3\'a3\'d7\'ee\'cf\'c8\'d6\'b4\'d0\'d0\'b5\'c4\'cf\'df\'b3\'cc\'a3\'ac\'bc\'b4\'a1\'b0\'d6\'f7\'cf\'df\'b3\'cc\'a1\'b1 \'c0\'b4\'c3\'e8\'bb\'e6\'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'a1\'a2\'b4\'a6\'c0\'ed\'b4\'a5\'c3\'fe\'c6\'c1\'c4\'bb\'b5\'c4\'ca\'c2\'bc\'fe\'b5\'c8\'a1\'a3\'c8\'e7\'b9\'fb\'d4\'d9\'b8\'c4\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'bd\'f8\'d0\'d0\'b3\'a4\'ca\'b1\'bc\'e4\'b5\'c4\'b4\'a6\'c0\'ed\'a3\'ac\'c0\'fd\'c8\'e7\'a3\'baAR \'d3\'c3\'bb\'ad\'cf\'f1\'b5\'c4\'ca\'b6\'b1\'f0\'bb\'f2\'ca\'fd\'be\'dd\'bf\'e2\'b7\'c3\'ce\'ca\'a3\'ac\'bb\'fa\'bb\'e1\'b7\'c1\'b0\'ad\'d6\'f7\'cf\'df\'b3\'cc\'b5\'c4\'d6\'b4\'d0\'d0\'a3\'a8\'d7\'e8\'c8\'fb\'a3\'a9\'a1\'a3\'d4\'da OSX \'ba\'cd iOS \'b5\'c4\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d6\'d0\'a3\'ac\'bb\'e1\'b7\'c1\'b0\'ad\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'b1\'bb\'b3\'c6\'ce\'aa RunLoop \'b5\'c4\'d6\'f7\'d1\'ad\'bb\'b7\'b5\'c4\'d6\'b4\'d0\'d0\'a3\'ac\'b4\'d3\'b6\'f8\'b5\'bc\'d6\'c2\'b2\'bb\'c4\'dc\'b8\'fc\'d0\'c2\'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'a1\'a2\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'b5\'c4\'bb\'ad\'c3\'e6\'b3\'a4\'ca\'b1\'bc\'e4\'cd\'a3\'d6\'cd\'b5\'c8\'ce\'ca\'cc\'e2\'a1\'a3\'d5\'e2\'be\'cd\'ca\'c7\'b3\'a4\'ca\'b1\'bc\'e4\'b5\'c4\'b4\'a6\'c0\'ed\'b2\'bb\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'b6\'f8\'d4\'da\'c6\'e4\'cb\'fb\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'d4\'ad\'d2\'f2\'a1\'a3\'ca\'b9\'d3\'c3\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'a3\'ac\'d4\'da\'d6\'b4\'d0\'d0\'b3\'a4\'ca\'b1\'bc\'e4\'b5\'c4\'b4\'a6\'c0\'ed\'ca\'b1\'c8\'d4\'bf\'c9\'b1\'a3\'d6\'a4\'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'b5\'c4\'cf\'ec\'d3\'a6\'d0\'d4\'c4\'dc\'a1\'a3\
+\
+\
+
+\fs36 \cf2    2.1 Dispatch Queue\
+
+\fs22 \cf5        \'bf\'aa\'b7\'a2\'d5\'df\'d2\'aa\'d7\'f6\'b5\'c4\'d6\'bb\'ca\'c7\'b6\'a8\'d2\'e5\'cf\'eb\'d2\'aa\'d6\'b4\'d0\'d0\'b5\'c4\'c8\'ce\'ce\'f1\'b2\'a2\'d7\'b7\'bc\'d3\'b5\'bd\'ca\'ca\'b5\'b1\'b5\'c4 Dispatch Queue \'d6\'d0\'a1\'a3\
+       
+\f2  dispatch_async(\ulth \ulc5 q\ulnone uue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * 
+\f1 \'cf\'eb\'d6\'b4\'d0\'d0\'b5\'c4\'c8\'ce\'ce\'f1
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5        \});
+\f1 \
+       \
+      Dispatch Queue \'ca\'c7\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'b5\'c4\'b5\'c8\'b4\'fd\'b6\'d3\'c1\'d0\'a1\'a3\'cd\'a8\'b9\'fd dispatch_async \'ba\'af\'ca\'fd\'b5\'c8 API\'a3\'ac\'d4\'da Block \'d3\'ef\'b7\'a8\'d6\'d0\'bc\'c7\'ca\'f6\'cf\'eb\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'a3\'ac\'b2\'a2\'bd\'ab\'c6\'e4\'d7\'b7\'bc\'d3\'b5\'bd dispatch queue \'d6\'d0\'a1\'a3 Dispatch Queue \'b0\'b4\'d5\'d5\'d7\'b7\'bc\'d3\'cb\'b3\'d0\'f2\'a3\'a8\'cf\'c8\'bd\'f8\'cf\'c8\'b3\'f6 FIFO\'a3\'a9\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'a1\'a3\
+\
+     \'d4\'da\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'ca\'c7\'b4\'e6\'d4\'da\'c1\'bd\'d6\'d6 Dispatch Queue \'a3\'ac\'d2\'bb\'d6\'d6\'ca\'c7 \'b5\'c8\'b4\'fd\'cf\'d6\'d4\'da\'d6\'b4\'d0\'d0\'d6\'d0 \'b4\'a6\'c0\'ed\'b5\'c4 Serial Dispatch Queue\'a3\'ac\'c1\'ed\'d2\'bb\'d6\'d6\
+\'ca\'c7\'b2\'bb\'b5\'c8\'b4\'fd\'cf\'d6\'d4\'da\'d6\'b4\'d0\'d0\'d6\'d0\'b4\'a6\'c0\'ed\'b5\'c4 Concurrent Dispatch Queue\'a1\'a3\
+\
+    \'b5\'b1\'b1\'e4\'c1\'bf queue \'ce\'aa Serial Dispatch  Queue \'ca\'b1\'a3\'ac\'d2\'f2\'ce\'aa\'d2\'aa\'b5\'c8\'b4\'fd\'cf\'d6\'d4\'da\'d6\'b4\'d0\'d0\'d6\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'a3\'ac\'cb\'f9\'d2\'d4\'c8\'ce\'ce\'f1\'b1\'d8\'d0\'eb\'d4\'da\'c9\'cf\'d2\'bb\'b8\'f6\'c8\'ce\'ce\'f1\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'b2\'c5\'bb\'e1\'d6\'b4\'d0\'d0\'cf\'c2\'d2\'bb\'b8\'f6\'c8\'ce\'ce\'f1\'a3\'ac\'cd\'ac\'ca\'c2\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'ca\'fd\'d6\'bb\'c4\'dc\'ca\'c7 1\'b8\'f6\'a3\'ac\'c8\'ce\'ce\'f1\'b1\'d8\'b6\'a8\'ca\'c7\'b0\'b4\'d7\'c5\'cb\'b3\'d0\'f2\'bd\'f8\'d0\'d0\'b4\'a6\'c0\'ed\'a1\'a3\
+    \'b5\'b1\'b1\'e4\'c1\'bf queue \'ce\'aa Concurrent Dispatch Queue \'ca\'b1\'a3\'ac\'d2\'f2\'ce\'aa\'b2\'bb\'d3\'c3\'b5\'c8\'b4\'fd\'cf\'d6\'d4\'da\'d6\'b4\'d0\'d0\'d6\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'a3\'ac\'cb\'f9\'d2\'d4\'b2\'bb\'b9\'dc\'c9\'cf\'d2\'bb\'b8\'f6\'b4\'a6\'c0\'ed\'ca\'c7\'b7\'f1\'d6\'b4\'d0\'d0\'cd\'ea\'b1\'cf\'a3\'ac\'ba\'f3\'c3\'e6\'b5\'c4\'b4\'a6\'c0\'ed\'d2\'b2\'bb\'e1\'bf\'aa\'ca\'bc\'d6\'b4\'d0\'d0\'a1\'a3\'d5\'e2\'d1\'f9\'cb\'e4\'c8\'bb\'b2\'bb\'d3\'c3\'b5\'c8\'b4\'fd\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'a3\'ac\'bf\'c9\'d2\'d4\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b6\'e0\'b8\'f6\'b4\'a6\'c0\'ed\'a3\'ac\'b5\'ab\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'ca\'fd\'c1\'bf\'c8\'a1\'be\'f6\'d3\'da\'b5\'b1\'c7\'b0\'cf\'b5\'cd\'b3\'b5\'c4\'d7\'b4\'cc\'ac\'a1\'a3\'bc\'b4 iOS \'ba\'cd OSX \'bb\'f9\'d3\'da Dispatch Queue \'d6\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'ca\'fd\'a1\'a2CPU \'ba\'cb\'ca\'fd\'d2\'d4\'bc\'b0 CPU \'b8\'ba\'ba\'c9\'b5\'c8\'b5\'b1\'c7\'b0\'cf\'b5\'cd\'b3\'d7\'b4\'cc\'ac\'c0\'b4\'be\'f6\'b6\'a8 Concurrent Dispatch Queue \'d6\'d0\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'ca\'fd\'a1\'a3\'cb\'f9\'ce\'bd\'b2\'a2\'d0\'d0\'b4\'a6\'c0\'ed\'a3\'ac\'be\'cd\'ca\'c7\'b6\'e0\'c9\'d9\'cf\'df\'b3\'cc\'cd\'ac\'ca\'b1\'d6\'b4\'d0\'d0\'b6\'e0\'b8\'f6\'b4\'a6\'c0\'ed\'a1\'a3\
+\
+   \'d4\'da\'b2\'bb\'c4\'dc\'b8\'c4\'b1\'e4\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'cb\'b3\'d0\'f2\'bb\'f2\'b2\'bb\'cf\'eb\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b6\'e0\'b8\'f6\'b4\'a6\'c0\'ed\'ca\'b1\'ca\'b9\'d3\'c3 Serial Dispatch Queue\'a1\'a3\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2     2.2 dispatch_queue_create \
+
+\fs22 \cf5       Dispatch Queue  \'b5\'da\'d2\'bb\'d6\'d6\'b7\'bd\'b7\'a8\'ca\'c7\'cd\'a8\'b9\'fd GCD \'b5\'c4 API \'c9\'fa\'b3\'c9 Dispatch Queue\'a1\'a3\
+          \'cd\'a8\'b9\'fd dispatch_queue_create \'ba\'af\'ca\'fd\'bf\'c9\'c9\'fa\'b3\'c9 Dispatch Queue\
+    
+\f2         \cf9 dispatch_queue_t\cf5  \ulth m\ulnone ySerialDispatchQueue = \cf3 dispatch_queue_create\cf5 (\cf10 "com.example.gcd.mySerialDispatchQueue"\cf5 , \cf8 NULL\cf5 );
+\f0\fs24 \cf0 \
+
+\f1\fs22 \cf5    \
+     Concurrent Dispatch Queue \'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b6\'e0\'b8\'f6\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'a3\'ac\'b6\'f8 Serial Dispatch Queue \'cd\'ac\'ca\'b1\'d6\'bb\'c4\'dc\'d6\'b4\'d0\'d0 1 \'b8\'f6\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'a1\'a3 \'cb\'e4\'c8\'bb Serial Dispatch Queue \'ba\'cd Concurrent Dispatch Queue \'ca\'dc\'b5\'bd\'cf\'b5\'cd\'b3\'d7\'ca\'d4\'b4\'b5\'c4\'cf\'de\'d6\'c6\'a3\'ac\'b5\'ab\'ca\'c7 dispatch_queue_create \'ba\'af\'ca\'fd\'bf\'c9\'d2\'d4\'c9\'fa\'b3\'c9\'c8\'ce\'d2\'e2\'b6\'e0\'b8\'f6 Dispatch Queue\'a1\'a3\
+    \'b5\'b1\'c9\'fa\'b3\'c9\'b6\'e0\'b8\'f6 Serial Dispatch Queue \'ca\'b1\'a3\'ac\'b8\'f7\'b8\'f6 Serial Dispatch Queue \'bd\'ab\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'a1\'a3\'cb\'e4\'c8\'bb\'d4\'da 1 \'b8\'f6 Serial Dispatch Queue \'d6\'d0\'cd\'ac\'ca\'b1\'d6\'bb\'c4\'dc\'d6\'b4\'d0\'d0\'d2\'bb\'b8\'f6\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'a3\'ac\'b5\'ab\'c8\'e7\'b9\'fb\'bd\'ab\'b4\'a6\'c0\'ed\'b7\'d6\'b1\'f0\'d7\'b7\'bc\'d3\'b5\'bd 4 \'b8\'f6 Serial Dispatch Queue \'d6\'d0\'a3\'ac\'b8\'f7\'b8\'f6 Serial Dispatch Queue \'d6\'b4\'d0\'d0 1 \'b8\'f6\'a3\'ac\'bc\'b0\'cd\'ac\'ca\'c2\'d6\'b4\'d0\'d0 4 \'b8\'f6\'b4\'a6\'c0\'ed\'a1\'a3\
+      \'c8\'e7\'b9\'fb\'b9\'fd\'b6\'e0\'b5\'c4\'ca\'b9\'d3\'c3\'b6\'e0\'cf\'df\'b3\'cc\'a3\'ac\'bd\'ab\'bb\'e1\'cf\'fb\'ba\'c4\'b4\'f3\'c1\'bf\'c4\'da\'b4\'e6\'a3\'ac\'d2\'fd\'c6\'f0\'b4\'f3\'c1\'bf\'b5\'c4\'c9\'cf\'cf\'c2\'ce\'c4\'c7\'d0\'bb\'bb\'a3\'ac\'b4\'f3\'b7\'f9\'bc\'f5\'b5\'cd\'cf\'b5\'cd\'b3\'b5\'c4\'d0\'d4\'c4\'dc\'a1\'a3\
+      \
+      \'ce\'aa\'c1\'cb\'b1\'dc\'c3\'e2\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'ce\'ca\'cc\'e2\'d6\'ae\'d2\'bb \'a1\'aa\'a1\'aa\'a1\'aa\'a1\'aa\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'b8\'fc\'d0\'c2\'cf\'e0\'cd\'ac\'d7\'ca\'d4\'b4\'b5\'bc\'d6\'c2\'ca\'fd\'be\'dd\'be\'ba\'d5\'f9\'ca\'b1\'a3\'ac\'ca\'b9\'d3\'c3 Serial Dispatch Queue\'a1\'a3\
+     
+\f2         \cf9 dispatch_queue_t\cf5  \ulth m\ulnone yConcurrentDispatchQueue = \cf3 dispatch_queue_create\cf5 (\cf10 "com.example.gcd.myConcurrentDispatchQueue"\cf5 , \cf11 DISPATCH_QUEUE_CONCURRENT\cf5 );
+\f0\fs24 \cf0 \
+
+\f1\fs22 \cf5 \
+    
+\f2 \cf3 dispatch_queue_create 
+\f1 \'ba\'af\'ca\'fd\'b5\'c4\'b7\'b5\'bb\'d8\'d6\'b5\'ce\'aa\'b1\'ed\'ca\'be Dispat\cf5 ch\cf3  Queue \'b5\'c4 
+\f2 \cf9 dispatch_queue_t 
+\f1 \cf3 \'c0\'e0\'d0\'cd\cf9 \cb4 \'a1\'a3\cf3 \cb4 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2 \cf5        
+\f1 \'d4\'da
+\f2  Concurrent Dispatch Queue 
+\f1 \'d6\'d0\'d6\'b4\'d0\'d0\'d6\'b8\'b6\'a8\'b5\'c4
+\f2  Block
+\f1 \'a1\'a3
+\f2 \
+        \cf3 dispatch_sync\cf5 (myConcurrentDispatchQueue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"Block on myConcurrentDispatchQueue"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+      \
+\
+  2.3  Main Dispatch Queue / Global Dispatch Queue\
+    Dispatch Queue \'b5\'da\'b6\'fe\'d6\'d6\'b7\'bd\'b7\'a8\'ca\'c7 \'bb\'f1\'c8\'a1\'cf\'b5\'cd\'b3\'b1\'ea\'d7\'bc\'cc\'e1\'b9\'a9\'b5\'c4 Dispatch Queue\'a1\'a3\
+    Main Dispatch Queue \'ca\'c7\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'b5\'c4 Dispatch Queue\'a1\'a3\'d2\'f2\'ce\'aa\'d6\'f7\'cf\'df\'b3\'cc\'d6\'bb\'d3\'d0\'d2\'bb\'b8\'f6\'a3\'ac \'cb\'f9\'d2\'d4 Main Dispatch Queue \'d7\'d4\'c8\'bb\'be\'cd\'ca\'c7 Serial Dispatch  Queue\'a1\'a3\
+    \'d7\'b7\'bc\'d3\'b5\'bd Main Dispatch Queue \'b5\'c4\'b4\'a6\'c0\'ed\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'b5\'c4 RunLoop \'d6\'d0\'d6\'b4\'d0\'d0\'a1\'a3\'d3\'c9\'d3\'da\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'a3\'ac\'d2\'f2\'b4\'cb\'d2\'aa\'bd\'ab\'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'b5\'c4\'bd\'e7\'c3\'e6\'b8\'fc\'d0\'c2\'b5\'c8\'d2\'bb\'d0\'a9\'b1\'d8\'d0\'eb\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'d7\'b7\'bc\'d3\'b5\'bd Main Dispatch Queue \'ca\'b9\'d3\'c3\'a1\'a3\'d5\'e2\'d5\'fd\'ba\'c3\'d3\'eb NSObject \'c0\'e0\'b5\'c4 performSelectorOnMainThread \'ca\'b5\'c0\'fd\'b7\'bd\'b7\'a8\'d5\'e2\'d2\'bb\'d6\'b4\'d0\'d0\'b7\'bd\'b7\'a8\'cf\'e0\'cd\'ac\'a1\'a3\
+\
+\
+    Global Dispatch Queue \'ca\'c7 Concurrent Dispatch Queue \'a1\'a3\'d3\'d0\'cb\'c4\'b8\'f6\'d6\'b4\'d0\'d0 \'d3\'c5\'cf\'c8\'bc\'b6\'a3\'ac\'b7\'d6\'b1\'f0\'ca\'c7\'a3\'ba \'b8\'df\'d3\'c5\'cf\'c8\'bc\'b6\'a3\'a8High Priority\'a3\'a9\'a1\'a2\'c4\'ac\'c8\'cf\'d3\'c5\'cf\'c8\'bc\'b6\'a3\'a8Default Priority\'a3\'a9\'a1\'a2\'b5\'cd\'d3\'c5\'cf\'c8\'bc\'b6\'a3\'a8Low Priority\'a3\'a9\'a1\'a2\'ba\'f3\'cc\'a8\'d3\'c5\'cf\'c8\'bc\'b6\'a3\'a8Background Priority\'a3\'a9\'a1\'a3\'cd\'a8\'b9\'fd XNU \'c4\'da\'ba\'cb\'b9\'dc\'c0\'ed\'b5\'c4\'d3\'c3\'d3\'da Global Dispatch Queue \'b5\'c4\'cf\'df\'b3\'cc\'a3\'ac\'bd\'ab\'b8\'f7\'d7\'d4\'ca\'b9\'d3\'c3\'b5\'c4 Global Dispatch Queue \'b5\'c4\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'d7\'f7\'ce\'aa\'cf\'df\'b3\'cc\'b5\'c4\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'ca\'b9\'d3\'c3\'a1\'a3\'d4\'da\'cf\'f2 Global Dispatch Queue \'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'ca\'b1\'a3\'ac\'d3\'a6\'d1\'a1\'d4\'f1\'d3\'eb\'b4\'a6\'c0\'ed\'c4\'da\'c8\'dd\'b6\'d4\'d3\'a6\'b5\'c4\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'b5\'c4 Global Dispatch Queue\'a1\'a3\
+    \'b5\'ab\'ca\'c7\'cd\'a8\'b9\'fd XNU \'c4\'da\'ba\'cb\'d3\'c3\'d3\'da Global Dispatch Queue \'b5\'c4\'cf\'df\'b3\'cc\'b2\'a2\'b2\'bb\'c4\'dc\'b1\'a3\'d6\'a4\'ca\'b5\'ca\'b1\'d0\'d4\'a3\'ac\'d2\'f2\'b4\'cb\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'d6\'bb\'ca\'c7\'b4\'f3\'d6\'c2\'b5\'c4\'c5\'d0\'b6\'cf\'a1\'a3\'c0\'fd\'c8\'e7\'d4\'da\'b4\'a6\'c0\'ed\'c4\'da\'c8\'dd\'bf\'c9\'d3\'d0\'bf\'c9\'ce\'de\'ca\'b1\'a3\'ac\'ca\'b9\'d3\'c3\'ba\'f3\'cc\'a8\'d3\'c5\'cf\'c8\'bc\'b6\'b5\'c4 Global Dispatch Queue \'b5\'c8\'a3\'ac\'d6\'bb\'c4\'dc\'bd\'f8\'d0\'d0\'d5\'e2\'d6\'d6\'b3\'cc\'b6\'c8\'b5\'c4\'c7\'f8\'b7\'d6\'a1\'a3\
+\
+
+\f2         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * Main Dispatch Queue 
+\f1 \'b5\'c4\'bb\'f1\'c8\'a1\'b7\'bd\'b7\'a8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  \ulth m\ulnone ainDispatchQueue = \cf3 dispatch_get_main_queue\cf5 ();
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * Global Dispatch Queue (
+\f1 \'b8\'df\'d3\'c5\'cf\'c8\'bc\'b6
+\f2 )
+\f1 \'b5\'c4\'bb\'f1\'c8\'a1\'b7\'bd\'b7\'a8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  \ulth g\ulnone lobalDispatchQueueHigh = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_HIGH\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * Global Dispatch Queue (
+\f1 \'c4\'ac\'c8\'cf\'d3\'c5\'cf\'c8\'bc\'b6
+\f2 )
+\f1 \'b5\'c4\'bb\'f1\'c8\'a1\'b7\'bd\'b7\'a8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  \ulth g\ulnone lobalDispatchQueueDefault = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * Global Dispatch Queue (
+\f1 \'ba\'f3\'cc\'a8\'d3\'c5\'cf\'c8\'bc\'b6
+\f2 )
+\f1 \'b5\'c4\'bb\'f1\'c8\'a1\'b7\'bd\'b7\'a8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  \ulth g\ulnone lobalDispatchQueueBackground = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_BACKGROUND\cf5 , \cf6 0\cf5 );
+\f1 \
+\
+\
+\
+     \'ca\'b9\'d3\'c3 Main Dispatch Queue \'ba\'cd Global Dispatch Queue\
+
+\f2 \cf7         /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * 
+\f1 \'d4\'da\'c4\'ac\'c8\'cf\'d3\'c5\'cf\'c8\'bc\'b6\'b5\'c4
+\f2  Global Dispatch Queue 
+\f1 \'d6\'d0\'d6\'b4\'d0\'d0
+\f2  Block
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (\cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 ), ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * 
+\f1 \'bf\'c9\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'d4\'da
+\f2  Mian Dispatch Queue 
+\f1 \'d6\'d0\'d6\'b4\'d0\'d0
+\f2  Block
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_async\cf5 (\cf3 dispatch_get_main_queue\cf5 (), ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                 * 
+\f1 \'d6\'bb\'c4\'dc\'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                 */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2 2.4  dispatch_set_target_queue \
+
+\fs22 \cf5       dispatch_queue_create \'ba\'af\'ca\'fd\'c9\'fa\'b3\'c9\'b5\'c4 Dispatch Queue \'b2\'bb\'b9\'dc\'ca\'c7 Serial Dispatch Queue \'bb\'b9\'ca\'c7 Concurrent Dispatch Queue\'a3\'ac\'b6\'bc\'ca\'c7\'d3\'c3\'d3\'eb\'c4\'ac\'c8\'cf\'d3\'c5\'cf\'c8\'bc\'b6 Global Dispatch Queue \'cf\'e0\'cd\'ac\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'b5\'c4\'cf\'df\'b3\'cc\'a1\'a3\'b6\'f8\'b1\'e4\'b8\'fc\'c9\'fa\'b3\'c9\'b5\'c4 Dispatch Queue \'b5\'c4\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'d2\'aa\'ca\'b9\'d3\'c3 dispatch_set_target_queue \'ba\'af\'ca\'fd\'a1\'a3\'d4\'da\'ba\'f3\'cc\'a8\'d6\'b4\'d0\'d0\'b6\'af\'d7\'f7\'b4\'a6\'c0\'ed\'b5\'c4 Serial Dispatch Queue \'b5\'c4\'c9\'fa\'b3\'c9\'b7\'bd\'b7\'a8\'c8\'e7\'cf\'c2\'a3\'ba  \
+\
+             
+\f2  \cf9 dispatch_queue_t\cf5  mySerialDispatchQueue = \cf3 dispatch_queue_create\cf5 (\cf10 "com.example.gcd.mySerialDispatchQueue"\cf5 , \cf8 NULL\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  globalDispatchQueueBackground = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_BACKGROUND\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_set_target_queue\cf5 (mySerialDispatchQueue, globalDispatchQueueBackground);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5       
+\f1 \
+         \'d6\'b8\'b6\'a8\'d2\'aa\'b1\'e4\'b8\'fc\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'b5\'c4 Dispatch Queue \'ce\'aa dispatch_set_target_queue \'ba\'af\'ca\'fd\'b5\'c4\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'a3\'ac\'d6\'b8\'b6\'a8\'d2\'aa\'ca\'b9\'d3\'c3\'b5\'c4\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'cf\'e0\'cd\'ac\'d3\'c5\'cf\'c8\'bc\'b6\'b5\'c4 Global Dispatch Queue \'ce\'aa\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'a3\'a8\'c4\'bf\'b1\'ea\'a3\'a9\'a1\'a3\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'c8\'e7\'b9\'fb\'d6\'b8\'b6\'a8\'cf\'b5\'cd\'b3\'cc\'e1\'b9\'a9\'b5\'c4 Main Dispatch Queue \'ba\'cd Global Dispatch Queue \'d4\'f2\'b2\'bb\'d6\'aa\'b5\'c0\'bb\'e1\'b3\'f6\'cf\'d6\'ca\'b2\'c3\'b4\'d7\'b4\'bf\'f6\'a3\'ac\'d2\'f2\'b4\'cb\'d5\'e2\'d0\'a9\'be\'f9\'b2\'bb\'bf\'c9\'d6\'b8\'b6\'a8\'a1\'a3\
+\
+        \'bd\'ab Dispatch Queue \'d6\'b8\'b6\'a8\'ce\'aa dispatch_set_target_queue \'ba\'af\'ca\'fd\'b5\'c4\'b2\'ce\'ca\'fd\'a3\'ac\'b2\'bb\'bd\'f6\'bf\'c9\'d2\'d4\'b1\'e4\'b8\'fc Dispatch Queue \'b5\'c4\'d6\'b4\'d0\'d0\'d3\'c5\'cf\'c8\'bc\'b6\'a3\'ac\'bb\'b9\'bf\'c9\'d2\'d4\'d7\'f6\'b3\'c9 Dispatch Queue \'b5\'c4\'d6\'b4\'d0\'d0\'bd\'d7\'b2\'e3\'a1\'a3\'c8\'e7\'b9\'fb\'d4\'da\'b6\'e0\'b8\'f6 Serial Dispatch Queue \'d6\'d0\'d3\'c3 dispatch_set_target_queue \'ba\'af\'ca\'fd\'d6\'b8\'b6\'a8\'c4\'bf\'b1\'ea\'ce\'aa\'c4\'b3\'d2\'bb\'b8\'f6 Serial Dispatch Queue\'a3\'ac\'c4\'c7\'c3\'b4\'d4\'ad\'c0\'b4\'b1\'be\'d3\'a6\'b8\'c3\'b1\'fc\'d0\'d4\'d6\'b4\'d0\'d0\'b5\'c4\'b6\'e0\'b8\'f6 Serial Dispatch Queue\'a3\'ac \'d4\'da\'c4\'bf\'b1\'ea Serial Dispatch Queue \'c9\'cf\'d6\'bb\'c4\'dc\'cd\'ac\'ca\'b1\'d6\'b4\'d0\'d0\'d2\'bb\'b8\'f6\'b4\'a6\'c0\'ed\'a1\'a3\
+       \'d4\'da\'b1\'d8\'d0\'eb\'bd\'ab\'b2\'bb\'bf\'c9\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'d7\'b7\'bc\'d3\'b5\'bd\'b6\'e0\'b8\'f6 Serial Dispatch Queue \'d6\'d0\'ca\'b1\'a3\'ac\'c8\'e7\'b9\'fb\'ca\'b9\'d3\'c3 dispatch_set_target_queue \'ba\'af\'ca\'fd\'bd\'ab\'c4\'bf\'b1\'ea\'d6\'b8\'b6\'a8\'ce\'aa\'c4\'b3\'d2\'bb\'b8\'f6 Serial Dispatch Queue \'a3\'ac\'bc\'b4\'bf\'c9\'b7\'c0\'d6\'b9\'b4\'a6\'c0\'ed\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'a1\'a3\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2 2.5  dispatch_after\
+
+\fs22 \cf5      \'be\'ad\'b3\'a3\'bb\'e1\'d3\'f6\'b5\'bd\'d5\'e2\'d1\'f9\'b5\'c4\'c7\'e9\'bf\'f6\'a3\'ba \'cf\'eb\'d4\'da 3 \'c3\'eb\'ba\'f3\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'a1\'a3\'bf\'c9\'c4\'dc\'b2\'bb\'bd\'f6\'cf\'de\'d3\'da 3 \'c3\'eb\'a3\'ac\'d7\'dc\'d6\'ae\'a3\'ac\'d5\'e2\'d6\'d6\'cf\'eb\'d4\'da\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'ba\'f3\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'b5\'c4\'c7\'e9\'bf\'f6\'a3\'ac\'bf\'c9\'ca\'b9\'d3\'c3 dispatch_after \'ba\'af\'ca\'fd\'c0\'b4\'ca\'b5\'cf\'d6\'a1\'a3\
+     \'d4\'da 3 \'c3\'eb\'ba\'f3\'d6\'b8\'b6\'a8\'b5\'c4 Block \'d7\'b7\'bc\'d3\'b5\'bd Main Dispatch Queue \'d6\'d0\'a3\'ba\
+    
+\f2   \cf9 dispatch_time_t\cf5  time = \cf3 dispatch_time\cf5 (\cf11 DISPATCH_TIME_NOW\cf5 , \cf6 3\cf5 ull * \cf11 NSEC_PER_SEC\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5     \cf3 dispatch_after\cf5 (time, \cf3 dispatch_get_main_queue\cf5 (), ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"Wait at least three seconds"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});\
+\
+    
+\f1 \'d0\'e8\'d2\'aa\'d7\'a2\'d2\'e2\'b5\'c4\'ca\'c7\'a3\'badispatch_after \'ba\'af\'ca\'fd\'b2\'a2\'b2\'bb\'ca\'c7\'d4\'da\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'ba\'f3\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'a3\'ac\'b6\'f8\'d6\'bb\'ca\'c7\'d4\'da\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'b5\'bd Dispatch Queue\'a1\'a3\'b4\'cb\'b4\'fa\'c2\'eb\'d3\'eb\'d4\'da 3 \'c3\'eb\'ba\'f3\'d3\'c3 dispatch_async \'ba\'af\'ca\'fd\'d7\'b7\'bc\'d3  Block \'b5\'bd Main Dispatch Queue \'b5\'c4\'cf\'e0\'cd\'ac\'a1\'a3\
+   \
+     \'d2\'f2\'ce\'aa Main Dispatch Queue \'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'b5\'c4 RunLoop \'d6\'d0\'d6\'b4\'d0\'d0\'a3\'ac\'cb\'f9\'d2\'d4\'d4\'da\'b1\'c8\'c8\'e7\'bc\'e4\'b8\'f4 1/60 \'c3\'eb\'d6\'b4\'d0\'d0\'b5\'c4 RunLoop \'d6\'d0\'a3\'ac Block \'d7\'ee\'bf\'ec\'d4\'da 3 \'c3\'eb\'ba\'f3\'d6\'b4\'d0\'d0\'a3\'ac\'d7\'ee\'c2\'fd\'d4\'da 3 \'c3\'eb + 1/60 \'c3\'eb\'ba\'f3\'d6\'b4\'d0\'d0\'a3\'ac\'b2\'a2\'c7\'d2\'d4\'da Main Dispatch Queue \'d3\'d0\'b4\'f3\'c1\'bf\'b4\'a6\'c0\'ed\'d7\'b7\'bc\'d3\'bb\'f2\'d6\'f7\'cf\'df\'b3\'cc\'b5\'c4\'b4\'a6\'c0\'ed\'b1\'be\'c9\'ed\'d3\'d0\'d1\'d3\'ca\'b1\'a3\'ac\'d5\'e2\'b8\'f6\'ca\'b1\'bc\'e4\'bb\'e1\'b8\'fc\'b3\'a4\'a1\'a3\
+    \'cb\'e4\'c8\'bb\'d4\'da\'d1\'cf\'b8\'f1\'ca\'b1\'bc\'e4\'d2\'aa\'c7\'f3\'cf\'c2\'ca\'b9\'d3\'c3\'bb\'e1\'b3\'f6\'cf\'d6\'ce\'ca\'cc\'e2\'a3\'ac\'b5\'ab\'d4\'da\'cf\'eb\'b4\'f3\'d6\'c2\'d1\'d3\'ca\'b1\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'ca\'b1\'a3\'ac\'b8\'c3\'ba\'af\'ca\'fd\'ca\'c7\'b7\'c7\'b3\'a3\'d3\'d0\'d0\'a7\'b5\'c4\'a1\'a3\
+\
+    dispatch_after \'ba\'af\'ca\'fd \'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'ca\'c7\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'d3\'c3\'b5\'c4 dispatch_time_t \'c0\'e0\'d0\'cd\'b5\'c4\'d6\'b5\'a1\'a3\'b8\'c3\'d6\'b5\'ca\'b9\'d3\'c3 dispatch_time \'ba\'af\'ca\'fd\'bb\'f2 dispatch_walttime \'ba\'af\'ca\'fd\'d7\'f6\'b3\'c9\'a1\'a3\
+   \
+   dispatch_time \'ba\'af\'ca\'fd\'c4\'dc\'b9\'bb\'bb\'f1\'c8\'a1\'b4\'d3\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd dispatch_time_t \'c0\'e0\'d0\'cd\'d6\'b5\'d6\'d0\'d6\'b8\'b6\'a8\'b5\'c4\'ca\'b1\'bc\'e4\'bf\'aa\'ca\'bc\'a3\'ac\'b5\'bd\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'d6\'b8\'b6\'a8\'b5\'c4\'ce\'a2\'ba\'c1\'c3\'eb\'b5\'a5\'ce\'bb\'ca\'b1\'bc\'e4\'ba\'f3\'b5\'c4\'ca\'b1\'bc\'e4\'a1\'a3\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'be\'ad\'b3\'a3\'ca\'b9\'d3\'c3\'b5\'c4\'d6\'b5\'ca\'c7 DISPATCH_TIME_NOW\'a1\'a3\'d5\'e2\'b8\'f6\'b1\'ed\'ca\'be\'cf\'d6\'d4\'da\'ca\'b1\'bc\'e4\'a1\'a3 \'a1\'b0ull\'a1\'b1 \'ca\'c7 C \'d3\'ef\'d1\'d4\'b5\'c4\'ca\'fd\'d6\'b5\'d7\'d6\'c3\'e6\'c1\'bf\'a3\'ac\'ca\'c7\'cf\'d4\'ca\'be\'b1\'e4ing\'c0\'e0\'d0\'cd\'ca\'b1\'ca\'b9\'d3\'c3\'b5\'c4\'d7\'d6\'b7\'fb\'b4\'ae \'a3\'a8\'b1\'ed\'ca\'be unsigned long long\'a3\'a9\
+\
+    dispatch_walttime \'ba\'af\'ca\'fd\'d3\'c9 POSIX \'d6\'d0\'ca\'b9\'d3\'c3\'b5\'c4 struct timespec \'c0\'e0\'d0\'cd\'b5\'c4\'ca\'b1\'bc\'e4\'b5\'c3\'b5\'bd dispatch_time_t \'c0\'e0\'d0\'cd\'b5\'c4\'d6\'b5\'a1\'a3dispatch_time \'ba\'af\'ca\'fd\'cd\'a8\'b3\'a3\'d3\'c3\'d3\'da\'bc\'c6\'cb\'e3\'cf\'e0\'b6\'d4\'ca\'b1\'bc\'e4\'a3\'ac\'b6\'f8 dispatch_walttime \'ba\'af\'ca\'fd\'d3\'c3\'d3\'da\'bc\'c6\'cb\'e3\'be\'f8\'b6\'d4\'ca\'b1\'bc\'e4\'a1\'a3\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2 2.6 Dispatch Group\
+
+\fs22 \cf5   \
+    \'d4\'da\'d7\'b7\'bc\'d3\'b5\'bd Dispatch Queue \'d6\'d0\'b5\'c4\'b6\'d4\'b8\'f6\'b4\'a6\'c0\'ed\'c8\'ab\'b2\'bf\'bd\'e1\'ca\'f8\'ba\'f3\'cf\'eb\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'b4\'a6\'c0\'ed\'a3\'ac\'d5\'e2\'d6\'d6\'c7\'e9\'bf\'f6\'bb\'e1\'be\'ad\'b3\'a3\'b3\'f6\'cf\'d6\'a1\'a3\'d6\'bb\'ca\'b9\'d3\'c3\'d2\'bb\'b8\'f6 Serial Dispatch Queue \'ca\'b1\'a3\'ac\'d6\'bb\'d2\'aa\'bd\'ab\'cf\'eb\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'c8\'ab\'b2\'bf\'d7\'b7\'bc\'d3\'b5\'bd\'b8\'c3 Serail Dispatch Queue \'d6\'d0\'a3\'ac\'b2\'a2\'d4\'da\'d7\'ee\'ba\'f3\'d7\'b7\'bc\'d3\'bd\'e1\'ca\'f8\'b4\'a6\'c0\'ed\'a3\'ac\'bc\'b4\'bf\'c9\'ca\'b5\'cf\'d6\'a1\'a3\
+     \'b5\'ab\'ca\'c7\'d4\'da\'ca\'b9\'d3\'c3 Concurrent Dispatch Queue \'ca\'b1\'bb\'f2\'cd\'ac\'ca\'b1\'ca\'b9\'d3\'c3\'b9\'fd\'b8\'f6 Dispatch Queue \'ca\'b1\'a3\'ac\'be\'cd\'bb\'e1\'b1\'e4\'b5\'c3\'b8\'b4\'d4\'d3\'a1\'a3 \'d4\'da\'d5\'e2\'d6\'d6\'c7\'e9\'bf\'f6\'cf\'c2\'ca\'b9\'d3\'c3 Dispatch Group\'a1\'a3\'c0\'fd\'c8\'e7\'a3\'ba\'d7\'b7\'bc\'d3 3 \'b8\'f6 Block \'b5\'bd Global Dispatch Queue \'a3\'ac\'d5\'e2\'d0\'a9 Block \'c8\'e7\'b9\'fb\'c8\'ab\'b2\'bf\'d6\'b4\'d0\'d0\'cd\'ea\'b1\'cf\'a3\'ac\'be\'cd\'bb\'e1\'d6\'b4\'d0\'d0 Global Dispatch Queue  \'d6\'d0\'bd\'e1\'ca\'f8\'b4\'a6\'c0\'ed\'d3\'c3\'b5\'c4 Block\'a3\'ba\
+ \
+
+\f2 \cf9         dispatch_queue_t\cf5  queue =       \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf9 dispatch_group_t\cf5  group = \cf3 dispatch_group_create\cf5 ();
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk0"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk1"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk2"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk3"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_notify\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf3 NSLog\cf5 (\cf10 @"Done"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+      \'d6\'b4\'d0\'d0\'bd\'e1\'b9\'fb\'a3\'ba blk0\
+                      blk2\
+                      blk3\
+                      blk1\
+                      Done \
+\
+    \'d2\'f2\'ce\'aa Global Dispatch Queue \'bc\'b4 Concurrent Dispatch Queue \'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'a3\'ac\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'a3\'ac\'cb\'f9\'d2\'d4\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'b5\'c4\'d6\'b4\'d0\'d0\'b5\'c4\'cb\'b3\'d0\'f2\'b2\'bb\'b6\'a8\'a1\'a3\'d6\'b4\'d0\'d0\'ca\'c7\'bb\'e1\'b7\'a2\'c9\'fa\'b1\'e4\'bb\'af\'a3\'ac\'b5\'ab\'ca\'c7\'d6\'b4\'d0\'d0\'bd\'e1\'b9\'fb\'b5\'c4 Done \'d2\'bb\'b6\'a8\'ca\'c7\'d7\'ee\'ba\'f3\'d2\'bb\'b8\'f6\'ca\'e4\'b3\'f6\'b5\'c4\'a1\'a3\
+    \'ce\'de\'c2\'db\'cf\'f2\'ca\'b2\'c3\'b4\'d1\'f9\'b5\'c4 Dispatch Queue \'d6\'d0\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'a3\'ac\'ca\'b9\'d3\'c3 Dispatch Group \'b6\'bc\'bf\'c9\'d2\'d4\'bc\'e0\'ca\'d3\'d5\'e2\'d0\'a9\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'b5\'c4\'bd\'e1\'ca\'f8\'a1\'a3\'d2\'bb\'b5\'a9\'bc\'ec\'b2\'e2\'b5\'bd\'cb\'f9\'d3\'d0\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a3\'ac\'be\'cd\'bf\'c9\'bd\'ab\'bd\'e1\'ca\'f8\'b5\'c4\'b4\'a6\'c0\'ed\'d7\'b7\'bc\'d3\'b5\'bd Dispatch Queue \'d6\'d0\'a1\'a3\'d5\'e2\'be\'cd\'ca\'c7\'ca\'b9\'d3\'c3 Dispatch Group \'b5\'c4\'d4\'ad\'d2\'f2\'a1\'a3\
+  \
+    dispatch_group_async \'ba\'af\'ca\'fd\'d3\'eb dispatch_async \'ba\'af\'ca\'fd\'cf\'e0\'cd\'ac\'a3\'ac\'b6\'bc\'d7\'b7\'bc\'d3 Block \'b5\'bd\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Queue \'d6\'d0\'a1\'a3\'d3\'eb  dispatch_async \'b2\'bb\'cd\'ac\'b5\'c4\'ca\'c7\'d6\'b8\'b6\'a8\'c9\'fa\'b3\'c9\'b5\'c4 Dispatch Group \'ce\'aa\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'a1\'a3\'d6\'b8\'b6\'a8\'b5\'c4 Block \'ca\'f4\'d3\'da\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Group\'a1\'a3\
+\
+   \'d4\'da\'d7\'b7\'bc\'d3\'b5\'bd Dispatch Queue \'d6\'d0\'b4\'a6\'c0\'ed\'c8\'ab\'b2\'bf\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'ca\'b1\'a3\'ac\'b8\'c3\'d4\'b4\'b4\'fa\'c2\'eb\'d6\'d0\'ca\'b9\'d3\'c3 dispatch_group_notify \'ba\'af\'ca\'fd\'bb\'e1\'bd\'ab\'d6\'b4\'d0\'d0\'b5\'c4 Block \'d7\'b7\'bc\'d3\'b5\'bd Dispatch Queue \'d6\'d0\'a3\'ac\'bd\'ab\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'d6\'b8\'b6\'a8\'ce\'aa\'d2\'aa\'bc\'e0\'ca\'d3\'b5\'c4 Dispatch Group\'a1\'a3\'d4\'da\'d7\'b7\'bc\'d3\'b5\'bd\'b8\'c3 Dispatch Group \'b5\'c4\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'ca\'b1\'a3\'ac\'bd\'ab\'b5\'da\'c8\'fd\'b8\'f6\'b2\'ce\'ca\'fd\'b5\'c4 Block \'d7\'b7\'bc\'d3\'b5\'bd \'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'b5\'c4 Dispatch Queue \'d6\'d0\'a1\'a3\'d4\'da dispatch_group_notify \'ba\'af\'ca\'fd\'d6\'d0\'b2\'bb\'b9\'dc\'d6\'b8\'b6\'a8\'ca\'b2\'c3\'b4\'d1\'f9\'b5\'c4 Dispatch Queue\'a3\'ac\'ca\'f4\'d3\'da Dispatch Group \'b5\'c4\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d4\'da\'d7\'b7\'bc\'d3\'d6\'b8\'b6\'a8\'b5\'c4 Block \'ca\'b1\'b6\'bc\'d2\'d1\'bd\'e1\'ca\'f8\'d6\'b4\'d0\'d0\'a1\'a3\
+\
+   \'c1\'ed\'cd\'e2\'a3\'ac\'d4\'da Dispatch Group \'d6\'d0\'d2\'b2\'bf\'c9\'d2\'d4\'ca\'b9\'d3\'c3 dispatch_group_wait \'ba\'af\'ca\'fd\'bd\'f6\'b5\'c8\'b4\'fd\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\
+            
+\f2  \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_group_t\cf5  group = \cf3 dispatch_group_create\cf5 ();
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk0"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk1"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_async\cf5 (group, queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk2"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_group_wait\cf5 (group, \cf11 DISPATCH_TIME_FOREVER\cf5 );
+\f1 \
+          \
+          dispatch_group_wait \'ba\'af\'ca\'fd\'b5\'c4\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'d6\'b8\'b6\'a8\'ce\'aa\'b5\'c8\'b4\'fd\'b5\'c4\'ca\'b1\'bc\'e4\'a3\'a8\'b3\'ac\'ca\'b1\'a3\'a9\'a1\'a3\'cb\'fc\'ca\'f4\'d3\'da dispatch_time_t \'c0\'e0\'d0\'cd\'b5\'c4\'d6\'b5\'a1\'a3\'b8\'c3\'b4\'fa\'c2\'eb\'ca\'b9\'d3\'c3 DISPATCH_TIME_FOREVER\'a3\'ac\'d2\'e2\'ce\'b6\'d7\'c5\'d3\'c0\'be\'c3\'b5\'c8\'b4\'fd\'a1\'a3\'d6\'bb\'d2\'aa\'ca\'f4\'d3\'da Dispatch Group \'b5\'c4\'b4\'a6\'c0\'ed\'c9\'d0\'ce\'b4\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a3\'ac\'be\'cd\'bb\'e1\'d2\'bb\'d6\'b1\'b5\'c8\'b4\'fd\'a3\'ac\'d6\'d0\'cd\'be\'b2\'bb\'bb\'e1\'c8\'a1\'cf\'fb\'a1\'a3\
+\
+       \'c8\'e7\'cd\'ac dispatch_after \'ba\'af\'ca\'fd\'cb\'b5\'c3\'f7\'d6\'d0\'b3\'f6\'cf\'d6\'b5\'c4\'c4\'c7\'d1\'f9\'a3\'ac\'d6\'b8\'b6\'a8\'b5\'c8\'b4\'fd\'bc\'e4\'b8\'f4\'ce\'aa 1 \'c3\'eb\'ca\'b1\'a3\'ac\'d3\'a6\'d7\'f7\'c8\'e7\'cf\'c2\'b4\'a6\'c0\'ed\'a3\'ba\
+    
+\f2       \cf9 dispatch_time_t\cf5  time = \cf3 dispatch_time\cf5 (\cf11 DISPATCH_TIME_NOW\cf5 , \cf6 1\cf5 ull * \cf11 NSEC_PER_SEC\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 long\cf5  result = \cf3 dispatch_group_wait\cf5 (group, time);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 if\cf5  (result == \cf6 0\cf5 ) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'ca\'f4\'d3\'da
+\f2  Dispatch Group 
+\f1 \'b5\'c4\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \} \cf8 else\cf5  \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'ca\'f4\'d3\'da
+\f2  Dispatch Group 
+\f1 \'b5\'c4\'c4\'b3\'d2\'bb\'b8\'f6\'b4\'a6\'c0\'ed\'bb\'b9\'d4\'da\'d6\'b4\'d0\'d0\'d6\'d0
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \}\
+\
+     
+\f1 \'c8\'e7\'b9\'fb
+\f2  dispatch_group_wait 
+\f1 \'ba\'af\'ca\'fd\'b5\'c4\'b7\'b5\'bb\'d8\'d6\'b5\'b2\'bb\'ce\'aa
+\f2  0
+\f1 \'a3\'ac
+\f2  
+\f1 \'be\'cd\'d2\'e2\'ce\'b6\'d7\'c5\'cb\'e4\'c8\'bb\'be\'ad\'b9\'fd\'c1\'cb\'d6\'b8\'b6\'a8\'b5\'c4\'ca\'b1\'bc\'e4\'a3\'ac\'b5\'ab\'ca\'f4\'d3\'da
+\f2  Dispatch Group 
+\f1 \'b5\'c4\'c4\'b3\'d2\'bb\'b8\'f6\'b4\'a6\'c0\'ed\'bb\'b9\'d4\'da\'d6\'b4\'d0\'d0\'d6\'d0\'a1\'a3\'c8\'e7\'b9\'fb\'b7\'b5\'bb\'d8\'d6\'b5\'ce\'aa 0\'a3\'ac \'c4\'c7\'c3\'b4\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\'b5\'b1\'b5\'c8\'b4\'fd\'b5\'c4\'ca\'b1\'bc\'e4\'ce\'aa DISPATCH_TIME_FOREVER \'a3\'ac\'d3\'c9 dispatch_group_wait \'ba\'af\'ca\'fd\'b7\'b5\'bb\'d8\'ca\'b1\'a3\'ac\'d3\'c9\'d3\'da\'ca\'f4\'d3\'da Dispatch Group \'b5\'c4\'b4\'a6\'c0\'ed\'b1\'d8\'b6\'a8\'c8\'ab\'b2\'bf\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a3\'ac\'d2\'f2\'b4\'cb\'b7\'b5\'bb\'d8\'d6\'b5\'ba\'e3\'ce\'aa 0\'a1\'a3\
+         \'b5\'b1\'d6\'b8\'b6\'a8 DISPATCH_TIME_NOW, \'d4\'f2\'b2\'bb\'d3\'c3\'c8\'ce\'ba\'ce\'b5\'c8\'b4\'fd\'bc\'b4\'bf\'c9\'c5\'d0\'b6\'a8\'ca\'f4\'d3\'da Dispatch Group \'b5\'c4\'b4\'a6\'c0\'ed\'ca\'c7\'b7\'f1\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\
+      \
+
+\f2         \cf8 long\cf5  result = \cf3 dispatch_group_wait\cf5 (group, \cf11 DISPATCH_TIME_NOW\cf5 );
+\f1 \
+\
+         \'d4\'da\'d6\'f7\'cf\'df\'b3\'cc\'b5\'c4 RunLoop \'b5\'c4\'c3\'bf\'b4\'ce\'d1\'ad\'bb\'b7\'d6\'d0\'a3\'ac\'bf\'c9\'bc\'ec\'b2\'e9\'d6\'b4\'d0\'d0\'ca\'c7\'b7\'f1\'bd\'e1\'ca\'f8\'a3\'ac\'b4\'d3\'b6\'f8\'b2\'bb\'ba\'c4\'b7\'d1\'b6\'e0\'d3\'e0\'b5\'c4\'b5\'c8\'b4\'fd\'ca\'b1\'bc\'e4\'a3\'ac\'cb\'e4\'c8\'bb\'d5\'e2\'d1\'f9\'d2\'b2\'bf\'c9\'d2\'d4\'a3\'ac\'b5\'ab\'ca\'c7\'d2\'bb\'b0\'e3\'d4\'da\'d5\'e2\'d6\'d6\'c7\'e9\'d0\'ce\'cf\'c2\'a3\'ac\'bb\'b9\'ca\'c7\'cd\'c6\'bc\'f6\'ca\'b9\'d3\'c3 dispatch_group_notify \'ba\'af\'ca\'fd\'d7\'b7\'bc\'d3\'bd\'e1\'ca\'f8\'b4\'a6\'c0\'ed\'b5\'bd Main Dispatch  Queue \'d6\'d0\'a1\'a3\'d5\'e2\'ca\'c7\'d2\'f2\'ce\'aa dispatch_group_notify \'ba\'af\'ca\'fd\'bf\'c9\'d2\'d4\'bc\'f2\'bb\'af\'d4\'b4\'b4\'fa\'c2\'eb\'a1\'a3\
+\
+\
+     \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2  2.7   dispatch_barrier_async\
+
+\fs22 \cf5        \'d4\'da\'b7\'c3\'ce\'ca\'ca\'fd\'be\'dd\'ba\'cd\'ce\'c4\'bc\'fe\'ca\'b1\'a3\'ac\'c8\'e7\'c7\'b0\'c3\'e6\'cb\'f9\'ca\'f6\'a3\'ac\'ca\'b9\'d3\'c3 Serial  Dispatch Queue \'bf\'c9\'b1\'dc\'c3\'e2\'ca\'fd\'be\'dd\'be\'ba\'d5\'f9\'b5\'c4\'ce\'ca\'cc\'e2\'a1\'a3\
+       \'d0\'b4\'c8\'eb\'b4\'a6\'c0\'ed\'c8\'b7\'ca\'b5\'b2\'bb\'bf\'c9\'d3\'eb\'c6\'e4\'cb\'fb\'b5\'c4\'d0\'b4\'c8\'eb\'b4\'a6\'c0\'ed\'d2\'d4\'bc\'b0\'b0\'fc\'ba\'ac\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'b5\'c4\'c6\'e4\'cb\'fb\'c4\'b3\'d0\'a9\'b4\'a6\'c0\'ed\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'a1\'a3\'b5\'ab\'ca\'c7\'c8\'e7\'b9\'fb\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'d6\'bb\'ca\'c7\'d3\'eb\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'a3\'ac\'c4\'c7\'c3\'b4\'b6\'e0\'b8\'f6\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'be\'cd\'b2\'bb\'bb\'e1\'b7\'a2\'c9\'fa\'ce\'ca\'cc\'e2\'a1\'a3\
+       \'d2\'b2\'be\'cd\'ca\'c7\'cb\'b5\'a3\'ac\'ce\'aa\'c1\'cb\'b8\'df\'d0\'a7\'c2\'ca\'b5\'c4\'b7\'c3\'ce\'ca\'a3\'ac\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'d7\'b7\'bc\'d3\'b5\'bd Concurrent Dispatch Queue \'d6\'d0\'a3\'ac\'d0\'b4\'c8\'eb\'b4\'a6\'c0\'ed\'d4\'da\'c8\'ce\'d2\'e2\'b8\'f6\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'c3\'bb\'d3\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'d7\'b4\'cc\'ac\'cf\'c2\'a3\'ac\'d7\'b7\'bc\'d3\'b5\'bd Serial Dispatch Queue \'d6\'d0\'bc\'b4\'bf\'c9\'a3\'a8\'d4\'da\'d0\'b4\'c8\'eb\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'d6\'ae\'c7\'b0\'a3\'ac\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'b2\'bb\'bf\'c9\'d6\'b4\'d0\'d0\'a3\'a9\'a1\'a3\
+       GCD \'ce\'aa\'ce\'d2\'c3\'c7\'cc\'e1\'b9\'a9\'c1\'cb dispatch_barrier_async \'ba\'af\'ca\'fd\'a3\'ac\'b8\'c3\'ba\'af\'ca\'fd\'cd\'ac dispatch_queue_create \'ba\'af\'ca\'fd\'c9\'fa\'b3\'c9\'b5\'c4 Concurrent Dispatch Queue \'d2\'bb\'c6\'f0\'ca\'b9\'d3\'c3\'a1\'a3\
+               
+\f2 \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_queue_create\cf5 (\cf10 "com.example.gcd.ForBarrier"\cf5 , \cf11 DISPATCH_QUEUE_CONCURRENT\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk0_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk1_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk2_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk3_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_barrier_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk_for_writing"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5     
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk4_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk5_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk6_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"blk7_for_reading"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+           \
+          \'d6\'b4\'d0\'d0\'bd\'e1\'b9\'fb\'a3\'ba\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs18 \cf5 \cb1 \CocoaLigature0                 blk0_for_reading\
+                blk2_for_reading\
+                blk1_for_reading\
+                blk3_for_reading\
+                blk_for_writing\
+                blk4_for_reading\
+                blk6_for_reading\
+                blk7_for_reading\
+                blk5_for_reading
+\f1\fs22 \cf5 \cb4 \CocoaLigature1 \
+\
+       dispatch_barrier_async \'ba\'af\'ca\'fd\'bb\'e1\'b5\'c8\'b4\'fd\'d7\'b7\'bc\'d3\'b5\'bd Concurrent Dispatch Queue \'c9\'cf\'b5\'c4\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'c8\'ab\'b2\'bf\'bd\'e1\'ca\'f8\'d6\'ae\'ba\'f3\'a3\'ac\'d4\'d9\'bd\'ab\'d6\'b8\'b6\'a8\'b5\'c4\'b4\'a6\'c0\'ed\'d7\'b7\'bc\'d3\'b5\'bd\'b8\'c3 Concurrent Dispatch Queue \'d6\'d0\'a3\'ac\'c8\'bb\'ba\'f3\'d4\'d9\'d3\'c9 dispatch_barrier_async \'ba\'af\'ca\'fd\'d7\'b7\'bc\'d3\'b5\'c4\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'cd\'ea\'b1\'cf\'ba\'f3\'a3\'ac Concurrent Dispatch Queue \'b2\'c5\'bb\'d6\'b8\'b4\'ce\'aa\'d2\'bb\'b0\'e3\'b5\'c4\'b6\'af\'d7\'f7\'a3\'ac\'d7\'b7\'bc\'d3\'b5\'bd\'b8\'c3 Concurrent Dispatch Queue \'b5\'c4\'b4\'a6\'c0\'ed\'d3\'d6\'bf\'aa\'ca\'bc\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'a1\'a3\
+       \'ca\'b9\'d3\'c3 Concurrent Dispatch Queue \'ba\'cd dispatch_barrier_async \'ba\'af\'ca\'fd\'bf\'c9\'ca\'b5\'cf\'d6\'b8\'df\'d0\'a7\'c2\'ca\'b5\'c4\'ca\'fd\'be\'dd\'bf\'e2\'b7\'c3\'ce\'ca\'ba\'cd\'ce\'c4\'bc\'fe\'b7\'c3\'ce\'ca\'a1\'a3\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2 3.8    dispatch_sync \
+
+\fs22 \cf5  \
+     dispatch_async \'ba\'af\'ca\'fd\'b5\'c4 \'a1\'b0async\'a1\'b1 \'d2\'e2\'ce\'b6\'d7\'c5 \'a1\'b0\'b7\'c7\'cd\'ac\'b2\'bd\'a3\'a8\'d2\'ec\'b2\'bd\'a3\'a9\'a1\'b1\'a3\'a8asynchronous\'a3\'a9\'a3\'ac\'be\'cd\'ca\'c7\'bd\'ab\'d6\'b8\'b6\'a8\'b5\'c4 Block \'a1\'b0\'b7\'c7\'cd\'ac\'b2\'bd\'a1\'b1\'b5\'d8\'d7\'b7\'bc\'d3\'b5\'bd\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Queue \'d6\'d0\'a1\'a3dispatch_async \'ba\'af\'ca\'fd\'b2\'bb\'d7\'f6\'c8\'ce\'ba\'ce\'b5\'c8\'b4\'fd\'a1\'a3\
+    dispatch_sync \'ba\'af\'ca\'fd\'d2\'e2\'ce\'b6\'d7\'c5 \'a1\'b0\'cd\'ac\'b2\'bd\'a1\'b1\'a3\'a8synchronous\'a3\'a9\'a3\'ac\'d2\'b2\'be\'cd\'ca\'c7\'bd\'ab\'d6\'c6\'b6\'a8\'b5\'c4 Block \'a1\'b0\'cd\'ac\'b2\'bd\'a1\'b1\'d7\'b7\'bc\'d3\'b5\'bd\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Queue \'d6\'d0\'a1\'a3\'d4\'d9\'d7\'b7\'bc\'d3 Block \'bd\'e1\'ca\'f8\'d6\'ae\'c7\'b0\'a3\'acdispatch_sync \'ba\'af\'ca\'fd\'bb\'e1\'d2\'bb\'d6\'b1\'b5\'c8\'b4\'fd\'a1\'a3\
+     \
+   \'cf\'c8\'bc\'d9\'c9\'e8\'d5\'e2\'d1\'f9\'d2\'bb\'d6\'d6\'c7\'e9\'bf\'f6\'a3\'ba \'d6\'b4\'d0\'d0 MIan Dispatch Queue \'ca\'b1\'a3\'ac\'ca\'b9\'d3\'c3 \'c1\'ed\'cd\'e2\'b5\'c4\'cf\'df\'b3\'cc  Global Dispatch Queue \'bd\'f8\'d0\'d0\'b4\'a6\'c0\'ed\'a3\'ac\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'d6\'ae\'ba\'f3\'c1\'a2\'bc\'b4\'ca\'b9\'d3\'c3\'cb\'f9\'b5\'c3\'b5\'bd\'bd\'e1\'b9\'fb\'a1\'a3\'d4\'da\'d5\'e2\'d6\'d6\'c7\'e9\'bf\'f6\'cf\'c2\'ca\'b9\'d3\'c3 dispatch_sync \'ba\'af\'ca\'fd\'a1\'a3 \
+               
+\f2 \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf3 dispatch_sync\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * 
+\f1 \'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"
+\f1 \'b4\'a6\'c0\'ed
+\f2 "\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+    \'d2\'bb\'b5\'a9\'b5\'f7\'d3\'c3 dispatch_sync \'ba\'af\'ca\'fd\'a3\'ac\'c4\'c7\'c3\'b4\'d4\'da\'d6\'b8\'b6\'a8\'b5\'c4\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'d6\'ae\'c7\'b0\'a3\'ac\'b8\'c3\'ba\'af\'ca\'fd\'b2\'bb\'bb\'e1\'b7\'b5\'bb\'d8\'a1\'a3dispatch_sync \'ba\'af\'ca\'fd\'bf\'c9\'bc\'f2\'bb\'af\'d4\'b4\'b4\'fa\'c2\'eb\'a3\'ac\'d2\'b2\'bf\'c9\'d2\'d4\'cb\'b5\'ca\'c7\'bc\'f2\'d2\'d7\'b0\'e6\'b5\'c4 dispatch_group_wait \'ba\'af\'ca\'fd\'a1\'a3\
+    \
+    dispatch_sync \'ba\'dc\'c8\'dd\'d2\'d7\'d2\'fd\'c6\'f0\'cb\'c0\'cb\'f8\'a1\'a3\
+
+\f2         \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_main_queue\cf5 ();
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_sync\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * 
+\f1 \'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"
+\f1 \'b4\'a6\'c0\'ed
+\f2 "\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});\
+\
+   
+\f1 \'b8\'c3\'b4\'fa\'c2\'eb\'d4\'da
+\f2  Main Dispat
+\f1 ch Queue \'bc\'b4\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d6\'b4\'d0\'d0\'d6\'b8\'b6\'a8\'b5\'c4 Block\'a3\'ac\'b2\'a2\'b5\'c8\'b4\'fd\'c8\'a5\'d6\'b4\'d0\'d0\'bd\'e1\'b9\'fb\'a1\'a3\'b6\'f8\'c6\'e4\'ca\'b5\'d6\'f7\'cf\'df\'b3\'cc\'d6\'d0\'d5\'fd\'d4\'da\'d6\'b4\'d0\'d0\'d5\'e2\'d0\'a9\'d4\'b4\'b4\'fa\'c2\'eb\'a3\'ac\'cb\'f9\'d2\'d4\'ce\'de\'b7\'a8\'d6\'b4\'d0\'d0\'d7\'b7\'bc\'d3\'b5\'bd Main Dispatch Queue \'d6\'d0\'b5\'c4 Block\'a1\'a3\
+\
+     \
+    \'cf\'c2\'c3\'e6\'b5\'c4\'c0\'fd\'d7\'d3\'d2\'b2\'d2\'bb\'d1\'f9\'a3\'ba\
+
+\f2         \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_main_queue\cf5 ();
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * 
+\f1 \'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_sync\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf3 NSLog\cf5 (\cf10 @"
+\f1 \'b4\'a6\'c0\'ed
+\f2 "\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5    Main Dispatch Queue 
+\f1 \'d6\'d0\'d6\'b4\'d0\'d0\'b5\'c4
+\f2  Block 
+\f1 \'b5\'c8\'b4\'fd
+\f2  Main Dispatch Queue 
+\f1 \'d6\'d0\'d2\'aa\'d6\'b4\'d0\'d0\'b5\'c4
+\f2  Block 
+\f1 \'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\
+\
+    \'b5\'b1\'c8\'bb Serial Dispatch Queue \'d2\'b2\'bb\'e1\'d2\'fd\'c6\'f0\'cd\'ac\'d1\'f9\'b5\'c4\'ce\'ca\'cc\'e2\'a1\'a3\
+\
+    dispatch_barrier_sync \'ba\'af\'ca\'fd\'ba\'cd dispatch_sync \'ba\'af\'ca\'fd\'cf\'e0\'cd\'ac\'a3\'ac\'bb\'e1\'b5\'c8\'b4\'fd\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'b5\'c4\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2 2.9  dispatch_apply\
+
+\fs22 \cf5       \
+      dispatch_apply \'ba\'af\'ca\'fd\'ca\'c7 dispatch_sync \'ba\'af\'ca\'fd \'ba\'cd Dispatch Group \'b5\'c4\'b9\'d8\'c1\'aa API\'a1\'a3\'b8\'c3\'ba\'af\'ca\'fd\'b0\'b4\'d6\'b8\'b6\'a8\'b5\'c4\'b4\'ce\'ca\'fd\'bd\'ab\'d6\'b8\'b6\'a8\'b5\'c4 Block \'d7\'b7\'bc\'d3\'b5\'bd\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Queue \'d6\'d0\'a3\'ac\'b2\'a2\'b5\'c8\'b4\'fd\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\
+
+\f2 \cf9         dispatch_queue_t\cf5  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf3 dispatch_apply\cf5 (\cf6 5\cf5 , queue, ^(\cf9 size_t\cf5  index) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"%zu"\cf5 , index);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 NSLog\cf5 (\cf10 @"Done"\cf5 );
+\f1 \
+         \'d6\'b4\'d0\'d0\'bd\'e1\'b9\'fb \'a3\'ba 0\
+                          1\
+                          3\
+                          4\
+                          2\
+                          Done\
+     \'d2\'f2\'ce\'aa\'d4\'da Global Dispatch Queue \'d6\'d0\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'a3\'ac\'cb\'f9\'d2\'d4\'b8\'f7\'b8\'f6\'b4\'a6\'c0\'ed\'b5\'c4\'d6\'b4\'d0\'d0\'ca\'b1\'bc\'e4\'b2\'bb\'b6\'a8\'a1\'a3\'b5\'ab\'ca\'c7\'ca\'e4\'b3\'f6\'bd\'e1\'b9\'fb\'d6\'d0\'d7\'ee\'ba\'f3\'b5\'c4 Done  \'b1\'d8\'b6\'a8\'ca\'c7\'d4\'da\'d7\'ee\'ba\'f3\'b5\'c4\'ce\'bb\'d6\'c3\'c9\'cf\'a1\'a3\'d5\'e2\'ca\'c7\'d2\'f2\'ce\'aa dispatch_apply \'ba\'af\'ca\'fd\'bb\'e1\'b5\'c8\'b4\'fd\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a1\'a3\
+   \
+    dispatch_apply \'ba\'af\'ca\'fd\'b5\'c4\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'ce\'aa \'d6\'d8\'b8\'b4\'b4\'ce\'ca\'fd\'a3\'ac\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'ce\'aa \'d7\'b7\'bc\'d3\'b6\'d4\'cf\'f3\'b5\'c4 Dispatch Queue\'a3\'ac \'b5\'da\'c8\'fd\'b8\'f6\'b2\'ce\'ca\'fd\'ce\'aa \'d7\'b7\'bc\'d3\'b5\'c4\'b4\'a6\'c0\'ed\'a1\'a3 \'d3\'eb\'b5\'bd\'c4\'bf\'c7\'b0\'ce\'aa\'d6\'b9\'cb\'f9\'b3\'f6\'cf\'d6\'b5\'c4\'c0\'fd\'d7\'d3\'b2\'bb\'cd\'ac\'a3\'ac\'b5\'da\'c8\'fd\'b8\'f6\'b2\'ce\'ca\'fd\'b5\'c4 Block \'ce\'aa\'b4\'f8\'d3\'d0\'b2\'ce\'ca\'fd\'b5\'c4 Block\'a1\'a3\'d5\'e2\'ca\'c7\'ce\'aa\'c1\'cb\'b0\'b4\'b5\'da\'d2\'bb\'b8\'f6\'b2\'ce\'ca\'fd\'d6\'d8\'b8\'b4\'d7\'b7\'bc\'d3 Block \'b2\'a2\'c7\'f8\'b7\'d6\'b8\'f7\'b8\'f6 Block \'b6\'f8\'ca\'b9\'d3\'c3\'a1\'a3 \'c0\'fd\'c8\'e7\'a3\'ba \'b6\'d4 NSArray \'c0\'e0\'b6\'d4\'cf\'f3\'b5\'c4\'cb\'f9\'d3\'d0\'d4\'aa\'cb\'d8\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'ca\'b1\'a3\'ac\'b2\'bb\'b1\'c8\'d2\'bb\'b8\'f6\'d2\'bb\'b8\'f6\'b1\'e0\'d0\'b4 for \'d1\'ad\'bb\'b7\'b2\'bf\'b7\'d6\'a1\'a3\
+\
+               
+\f2 \cf12 NSArray\cf5  *arr = \cf6 @[\cf10 @"iOS"\cf5 , \cf10 @"MacOS"\cf5 , \cf10 @"watchOS"\cf5 , \cf10 @"tvOS"\cf6 ]\cf5 ;
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5        
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+\
+
+\f2\fs22 \cf5         \cf3 dispatch_apply\cf5 ([arr \cf3 count\cf5 ], queue, ^(\cf9 size_t\cf5  index) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 NSLog\cf5 (\cf10 @"%zu: %@"\cf5 , index, [arr \cf3 objectAtIndex\cf5 :index]);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 NSLog\cf5 (\cf10 @"Done"\cf5 );\
+    
+\f1 \'d5\'e2\'d1\'f9\'bf\'c9\'d2\'d4\'bc\'f2\'b5\'a5\'b5\'d8\'d4\'da Global Dispatch Queue \'d6\'d0\'b6\'d4\'cb\'f9\'d3\'d0\'d4\'aa\'cb\'d8\'d6\'b4\'d0\'d0 Block\'a1\'a3\
+\
+  \
+     \'c1\'ed\'cd\'e2\'a3\'ac \'d3\'c9\'d3\'da dispatch_apply \'ba\'af\'ca\'fd\'d2\'b2\'d3\'eb dispatch_sync \'ba\'af\'ca\'fd\'cf\'e0\'cd\'ac\'a3\'ac\'bb\'e1\'b5\'c8\'b4\'fd\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8\'a3\'ac\'d2\'f2\'b4\'cb\'bf\'c9\'d2\'d4\'cd\'c6\'bc\'f6\'d4\'da dispatch_async \'ba\'af\'ca\'fd\'d6\'d0 \'b7\'c7\'cd\'ac\'b2\'bd\'d6\'b4\'d0\'d0 dispatch_apply \'ba\'af\'ca\'fd\'a1\'a3\
+\
+
+\f2         \cf12 NSArray\cf5  *arr = \cf6 @[\cf10 @"iOS"\cf5 , \cf10 @"MacOS"\cf5 , \cf10 @"watchOS"\cf5 , \cf10 @"tvOS"\cf6 ]\cf5 ;
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5        
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+\
+
+\f2\fs22 \cf5         \cf7 /**
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * 
+\f1 \'d4\'da
+\f2  Global Dispatch Queue 
+\f1 \'d6\'d0\'b7\'c7\'cd\'ac\'b2\'bd\'d6\'b4\'d0\'d0
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * Global Dispatch Queue 
+\f1 \'b5\'c8\'b4\'fd
+\f2  dispatch_apply 
+\f1 \'ba\'af\'ca\'fd\'d6\'d0\'c8\'ab\'b2\'bf\'b4\'a6\'c0\'ed\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_apply\cf5 ([arr \cf3 count\cf5 ], queue, ^(\cf9 size_t\cf5  index) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf3 NSLog\cf5 (\cf10 @"%zu: %@"\cf5 , index, [arr \cf3 objectAtIndex\cf5 :index]);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * dispatch_apply 
+\f1 \'ba\'af\'ca\'fd\'d6\'d0\'b4\'a6\'c0\'ed\'cd\'ea\'c8\'ab\'d6\'b4\'d0\'d0\'bd\'e1\'ca\'f8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'d4\'da
+\f2  MIan Dispatch Queue 
+\f1 \'d6\'d0\'b7\'c7\'cd\'ac\'b2\'bd\'d6\'b4\'d0\'d0
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_async\cf5 (\cf3 dispatch_get_main_queue\cf5 (), ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                  * 
+\f1 \'d4\'da
+\f2  Main Dispatch Queue 
+\f1 \'d6\'d0\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'a3\'ba
+\f2  
+\f1 \'d3\'c3\'bb\'a7\'bd\'e7\'c3\'e6\'b8\'fc\'d0\'c2\'b5\'c8
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                  */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf3 NSLog\cf5 (\cf10 @"Done"\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf2 2.10 dispatch_suspend / dispatch_resume \
+
+\fs22 \cf5    \
+      \'b5\'b1\'d7\'b7\'bc\'d3\'b4\'f3\'c1\'bf\'b4\'a6\'c0\'ed\'b5\'bd Dispatch Queue \'ca\'b1\'a3\'ac\'d4\'da\'d7\'b7\'bc\'d3\'b4\'a6\'c0\'ed\'b5\'c4\'b9\'fd\'b3\'cc\'d6\'d0\'a3\'ac\'d3\'d6\'ca\'c7\'cf\'a3\'cd\'fb\'b2\'bb\'d6\'b4\'d0\'d0\'d2\'d1\'d7\'b7\'bc\'d3\'b5\'c4\'b4\'a6\'c0\'ed\'a1\'a3\'c0\'fd\'c8\'e7\'d1\'dd\'cb\'e3\'bd\'e1\'b9\'fb\'b1\'bb Block \'bd\'d8\'bb\'f1\'ca\'b1\'a3\'ac\'d2\'bb\'d0\'a9\'b4\'a6\'c0\'ed\'bb\'e1\'b6\'d4\'d5\'e2\'b8\'f6\'d1\'dd\'cb\'e3\'bd\'e1\'b9\'fb\'d4\'ec\'b3\'c9\'d3\'b0\'cf\'ec\'a1\'a3\'d4\'da\'d5\'e2\'d6\'d6\'c7\'e9\'bf\'f6\'cf\'c2\'a3\'ac\'d6\'bb\'d2\'aa\'b9\'d2\'c6\'f0 Dispatch Queue \'bc\'b4\'bf\'c9\'a1\'a3\'b5\'b1\'bf\'c9\'d6\'b4\'d0\'d0\'ca\'b1\'d4\'d9\'bb\'d6\'b8\'b4\'a1\'a3\
+        
+\f2  dispatch_suspend 
+\f1 \'ba\'af\'ca\'fd\'b9\'d2\'c6\'f0\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Queue\'a1\'a3
+\f2   \
+           \cf3 dispatch_suspend\cf5 (queue);
+\f0\fs24 \cf0 \
+
+\f1\fs22 \cf5 \
+         dispatch_resume \'ba\'af\'ca\'fd\'bb\'d6\'b8\'b4\'d6\'b8\'b6\'a8\'b5\'c4 Dispatch Queue\'a1\'a3\
+                  
+\f2  \cf3 dispatch_resume\cf5 (queue);
+\f0\fs24 \cf0 \
+
+\f1\fs22 \cf5 \
+        \'d5\'e2\'d0\'a9\'ba\'af\'ca\'fd\'b6\'d4\'d2\'d1\'be\'ad\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'c3\'bb\'d3\'d0\'d3\'b0\'cf\'ec\'a1\'a3\'b9\'d2\'c6\'f0\'ba\'f3\'a3\'ac\'d7\'b7\'bc\'d3\'b5\'bd Dispatch Queue \'d6\'d0\'b5\'ab\'c9\'d0\'ce\'b4\'d6\'b4\'d0\'d0\'b5\'c4\'b4\'a6\'c0\'ed\'d4\'da\'b4\'cb\'d6\'ae\'ba\'f3\'cd\'a3\'d6\'b9\'d6\'b4\'d0\'d0\'a1\'a3\'b6\'f8\'bb\'d6\'b8\'b4\'d4\'f2\'ca\'b9\'b5\'c3\'d5\'e2\'b4\'a6\'c0\'ed\'c4\'dc\'b9\'bb\'bc\'cc\'d0\'f8\'d6\'b4\'d0\'d0\'a1\'a3\
+\
+\
+\
+
+\fs36 \cf2 2.11  Dispatch Semaphore\
+
+\fs22 \cf5       \
+     \'c8\'e7\'c7\'b0\'cb\'f9\'ca\'f6\'a3\'ac\'b5\'b1\'b2\'a2\'d0\'d0\'d6\'b4\'d0\'d0\'b4\'a6\'c0\'ed\'b8\'fc\'d0\'c2\'ca\'fd\'be\'dd\'ca\'b1\'a3\'ac\'bb\'e1\'b2\'fa\'c9\'fa\'ca\'fd\'be\'dd\'b2\'bb\'d2\'bb\'d6\'c2\'b5\'c4\'c7\'e9\'bf\'f6\'a3\'ac\'d3\'d0\'ca\'b1\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'bb\'b9\'bb\'e1\'d2\'ec\'b3\'a3\'bd\'e1\'ca\'f8\'a1\'a3\'cb\'e4\'c8\'bb\'ca\'b9\'d3\'c3 Serial Dispatch Queue \'ba\'cd dispatch_barrier_async \'ba\'af\'ca\'fd\'bf\'c9\'b1\'dc\'c3\'e2\'d5\'e2\'c0\'e0\'ce\'ca\'cc\'e2\'a3\'ac\'b5\'ab\'d3\'d0\'b1\'d8\'d2\'aa\'bd\'f8\'d0\'d0\'b8\'fc\'cf\'b8\'c1\'a3\'b6\'c8\'b5\'c4\'c5\'c5\'cb\'fb\'bf\'d8\'d6\'c6\'a1\'a3\
+    \'cb\'bc\'bf\'bc\'d2\'bb\'cf\'c2\'cf\'c2\'c3\'e6\'b5\'c4\'d5\'e2\'d6\'d6\'c7\'e9\'bf\'f6\'a3\'ba \'b2\'bb\'bf\'bc\'c2\'c7\'cb\'b3\'d0\'f2\'a3\'ac\'bd\'ab\'cb\'f9\'d3\'d0\'ca\'fd\'be\'dd\'d7\'b7\'bc\'d3\'b5\'bd NSMutableArray \'d6\'d0\'a3\'ba\
+             \
+              
+\f2 \cf9 dispatch_queue_t\cf5  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf12 NSMutableArray\cf5  *arrM = [\cf12 NSMutableArray\cf5  \cf3 array\cf5 ];
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 for\cf5  (\cf8 int\cf5   i = \cf6 0\cf5 ; i < \cf6 10000\cf5 ; i++) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 [arrM \cf3 addObject\cf5 :[\cf12 NSNumber\cf5  \cf3 numberWithInt\cf5 :i]];
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \}
+\f1 \
+\
+     \'d2\'f2\'ce\'aa\'b8\'c3\'b4\'fa\'c2\'eb\'ca\'b9\'d3\'c3 Global Dispatch Queue \'b8\'fc\'d0\'c2 NSMutableArray \'c0\'e0\'b6\'d4\'cf\'f3\'a3\'ac\'cb\'f9\'d2\'d4\'d6\'b4\'d0\'d0\'ba\'f3\'d3\'d0\'c4\'da\'b4\'e6\'b4\'ed\'ce\'f3\'b5\'bc\'d6\'c2\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d2\'ec\'b3\'a3\'bd\'e1\'ca\'f8\'b5\'c4\'b8\'c5\'c2\'ca\'ba\'dc\'b8\'df\'a3\'ac\'b4\'cb\'ca\'b1\'d3\'a6\'ca\'b9\'d3\'c3 Dispatch Semaphore\'a1\'a3\
+    Dispatch Semaphore \'b1\'be\'c0\'b4\'ca\'b9\'d3\'c3\'b5\'c4\'ca\'c7\'b8\'fc\'cf\'b8\'c1\'a3\'b5\'c4\'b6\'d4\'cf\'f3\'a3\'acDispatch Semaphore \'ca\'c7\'b3\'d6\'d3\'d0\'bc\'c6\'ca\'fd\'b5\'c4\'d0\'c5\'ba\'c5\'a3\'ac\'b8\'c3\'bc\'c6\'ca\'fd\'ca\'c7\'b6\'e0\'cf\'df\'b3\'cc\'b1\'e0\'b3\'cc\'d6\'d0\'b5\'c4\'bc\'bc\'ca\'f5\'c0\'e0\'d0\'cd\'d0\'c5\'ba\'c5\'a1\'a3\'cb\'f9\'ce\'bd\'d0\'c5\'ba\'c5\'a3\'ac\'c0\'e0\'cb\'c6\'d3\'da\'b9\'fd\'c2\'ed\'c2\'b7\'b5\'c4\'b3\'a3\'d3\'c3\'ca\'d6\'c6\'ec\'a1\'a3\'bf\'c9\'d2\'d4\'cd\'a8\'b9\'fd\'ca\'b1\'be\'d9\'c6\'f0\'ca\'d6\'c6\'ec\'a3\'ac\'b2\'bb\'bf\'c9\'d2\'d4\'cd\'a8\'b9\'fd\'ca\'b1\'b7\'c5\'cf\'c2\'ca\'d6\'c6\'ec\'a1\'a3\'b6\'f8\'d4\'da Dispatch Semaphore \'d6\'d0\'a3\'ac\'ca\'b9\'d3\'c3\'bc\'c6\'ca\'fd\'c0\'b4\'ca\'b5\'cf\'d6\'b8\'c3\'b9\'a6\'c4\'dc\'a3\'ac\'bc\'c6\'ca\'fd\'ce\'aa 0 \'ca\'b1\'b5\'c8\'b4\'fd\'a3\'ac\'bc\'c6\'ca\'fd\'ce\'aa 1 \'bb\'f2\'b4\'f3\'d3\'da 1 \'ca\'b1\'bc\'f5\'c8\'a5 1 \'b6\'f8\'b2\'bb\'b5\'c8\'b4\'fd\'a1\'a3\
+     \
+   \'cf\'c2\'c3\'e6\'bd\'e9\'c9\'dc\'ca\'b9\'d3\'c3\'b7\'bd\'b7\'a8\'a1\'a3\'cd\'a8\'b9\'fd dispatch_semaphore_create \'ba\'af\'ca\'fd\'c9\'fa\'b3\'c9 Dispatch Semaphore\'a1\'a3\
+   
+\f2         \cf9 dispatch_semaphore_t\cf5  semaphore = \cf3 dispatch_semaphore_create\cf5 (\cf6 1\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f1\fs22 \cf5      \'b2\'ce\'ca\'fd\'b1\'ed\'ca\'be\'bc\'c6\'ca\'fd\'b5\'c4\'b3\'f5\'ca\'bc\'d6\'b5\'a1\'a3\'b1\'be\'c0\'fd\'bd\'ab\'bc\'c6\'ca\'fd\'d6\'b5\'b3\'f5\'ca\'bc\'bb\'af\'ce\'aa 1 \'a1\'a3\
+     
+\f2      \
+\
+         \cf3 dispatch_semaphore_wait\cf5 (semaphore, \cf11 DISPATCH_TIME_FOREVER\cf5 );
+\f1 \
+     dispatch_semaphore_wait \'ba\'af\'ca\'fd\'b5\'c8\'b4\'fd Dispatch Semaphore \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'b4\'f3\'d3\'da\'bb\'f2\'b5\'c8\'d3\'da 1\'a1\'a3\'b5\'b1\'bc\'c6\'ca\'fd\'d6\'b5\'b4\'f3\'d3\'da\'b5\'c8\'d3\'da 1 \'a3\'ac\'bb\'f2\'d5\'df\'d4\'da\'b4\'fd\'bb\'fa\'d6\'d0\'bc\'c6\'ca\'fd\'b4\'f3\'d3\'da\'b5\'c8\'d3\'da 1 \'ca\'b1\'a3\'ac\'b6\'d4\'b8\'c3\'bc\'c6\'ca\'fd\'bd\'f8\'d0\'d0\'bc\'f5\'b7\'a8\'b2\'a2\'b4\'d3 dispatch_semaphore_wait \'ba\'af\'ca\'fd\'b7\'b5\'bb\'d8\'a1\'a3\'b5\'da\'b6\'fe\'b8\'f6\'b2\'ce\'ca\'fd\'d3\'eb dispatch_group_wait \'ba\'af\'ca\'fd\'b5\'c8\'cf\'e0\'cd\'ac\'a3\'ac\'d3\'c9  dispatch_time_t \'c0\'e0\'d0\'cd\'d6\'b5\'d6\'b8\'b6\'a8\'b5\'c8\'b4\'fd\'ca\'b1\'bc\'e4\'a1\'a3\'b8\'c3\'c0\'fd\'b5\'c4\'b2\'ce\'ca\'fd\'d2\'e2\'ce\'b6\'d7\'c5\'d3\'c0\'be\'c3\'b5\'c8\'b4\'fd\'a1\'a3\'c1\'ed\'cd\'e2\'a3\'acdispatch_semaphore_wait \'ba\'af\'ca\'fd\'b5\'c4\'b7\'b5\'bb\'d8\'d6\'b5\'d2\'b2\'d3\'eb dispatch_group_wait \'ba\'af\'ca\'fd\'cf\'e0\'cd\'ac\'a3\'ac\'bf\'c9\'cf\'f1\'d2\'bb\'cf\'c2\'d4\'b4\'b4\'fa\'c2\'eb\'d5\'e2\'d1\'f9\'a3\'ac\'cd\'a8\'b9\'fd\'b7\'b5\'bb\'d8\'d6\'b5\'bd\'f8\'d0\'d0\'b7\'d6\'d6\'a7\'b4\'a6\'c0\'ed\'a3\'ba\
+              
+\f2 \cf9 dispatch_semaphore_t\cf5  semaphore = \cf3 dispatch_semaphore_create\cf5 (\cf6 1\cf5 );
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf9 dispatch_time_t\cf5  time = \cf3 dispatch_time\cf5 (\cf11 DISPATCH_TIME_NOW\cf5 , \cf6 1\cf5 ull * \cf11 NSEC_PER_SEC\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 long\cf5  result = \cf3 dispatch_semaphore_wait\cf5 (semaphore, time);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 if\cf5  (result == \cf6 0\cf5 ) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'d3\'c9\'d3\'da
+\f2  Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'b4\'ef\'b5\'bd\'b4\'f3\'d3\'da\'b5\'c8\'d3\'da
+\f2  1
+\f1 \'a3\'bb
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'bb\'f2\'d5\'df\'d4\'da\'b4\'fd\'bb\'fa\'d6\'d0\'b5\'c4\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'c4\'da
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'b4\'ef\'b5\'bd\'b4\'f3\'d3\'da\'b5\'c8\'d3\'da
+\f2  1
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'cb\'f9\'d2\'d4
+\f2  Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'bc\'f5\'c8\'a5
+\f2  1.
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              *  
+\f1 \'bf\'c9\'d6\'b4\'d0\'d0\'d0\'e8\'d2\'aa\'d6\'b4\'d0\'d0\'c5\'c5\'cb\'fb\'bf\'d8\'d6\'c6\'b5\'c4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \} \cf8 else\cf5  \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'d3\'c9\'d3\'da
+\f2  Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'ce\'aa
+\f2  0
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'d2\'f2\'b4\'cb\'d4\'da\'b4\'ef\'b5\'bd\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'ce\'aa\'d6\'b9\'b4\'fd\'bb\'fa\'a1\'a3
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \}
+\f1 \
+\
+     dispatch_semaphore_wait \'ba\'af\'ca\'fd\'b7\'b5\'bb\'d8\'d6\'b5\'ce\'aa 0  \'ca\'b1\'a3\'ac\'bf\'c9\'b0\'b2\'c8\'ab\'b5\'c4\'d6\'b4\'d0\'d0\'d0\'e8\'d2\'aa\'bd\'f8\'d0\'d0\'c5\'c5\'cb\'fb\'bf\'d8\'d6\'c6\'b5\'c4\'b4\'a6\'c0\'ed\'a1\'a3\'b8\'c3\'b4\'a6\'c0\'ed\'bd\'e1\'ca\'f8\'ca\'b1\'cd\'a8\'b9\'fd dispatch_semaphore_signal \'ba\'af\'ca\'fd\'bd\'ab Dispatch Semaphore \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'bc\'d3 1\'a1\'a3\
+\
+    \'d4\'da\'c7\'b0\'c3\'e6\'b5\'c4\'d4\'b4\'b4\'fa\'c2\'eb\'d6\'d0\'ca\'b5\'bc\'ca\'ca\'b9\'d3\'c3 Dispatch Semaphore\'a3\'ba\
+               
+\f2 \cf9 \cb4 dispatch_queue_t\cf5 \cb4  queue = \cf3 dispatch_get_global_queue\cf5 (\cf11 \cb4 DISPATCH_QUEUE_PRIORITY_DEFAULT\cf5 \cb4 , \cf6 0\cf5 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * 
+\f1 \'c9\'fa\'b3\'c9
+\f2  Dispatch Semaphore
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'b3\'f5\'ca\'bc\'d6\'b5\'c9\'e8\'b6\'a8\'ce\'aa
+\f2  1
+\f1 \'a1\'a3
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          *
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          * 
+\f1 \'b1\'a3\'d6\'a4\'bf\'c9\'b7\'c3\'ce\'ca
+\f2  NSMutableArray 
+\f1 \'c0\'d7\'b6\'d4\'c4\'c7\'b8\'f6\'b5\'c4\'cf\'df\'b3\'cc\'cd\'ac\'ca\'b1\'d6\'bb\'c4\'dc\'ce\'aa
+\f2  1 
+\f1 \'b8\'f6\'a1\'a3
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7          */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf9 \cb4 dispatch_semaphore_t\cf5 \cb4  semaphore = \cf3 dispatch_semaphore_create\cf5 (\cf6 1\cf5 );
+\f0\fs24 \cf0 \
+\
+
+\f2\fs22 \cf5         \cf12 \cb4 NSMutableArray\cf5 \cb4  *arrM = [\cf12 \cb4 NSMutableArray\cf5 \cb4  \cf3 array\cf5 ];
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 for\cf5  (\cf8 int\cf5   i = \cf6 0\cf5 ; i < \cf6 10000\cf5 ; i++) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf3 dispatch_async\cf5 (queue, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf8 long\cf5  result = \cf3 dispatch_semaphore_wait\cf5 (semaphore, \cf11 \cb4 DISPATCH_TIME_FOREVER\cf5 \cb4 );
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \cf8 if\cf5  (result == \cf6 0\cf5 ) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                     \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      * 
+\f1 \'d3\'c9\'d3\'da
+\f2  Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'b4\'ef\'b5\'bd\'b4\'f3\'d3\'da\'b5\'c8\'d3\'da
+\f2  1
+\f1 \'a3\'bb
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      * 
+\f1 \'bb\'f2\'d5\'df\'d4\'da\'b4\'fd\'bb\'fa\'d6\'d0\'b5\'c4\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'c4\'da
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      * Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'b4\'ef\'b5\'bd\'b4\'f3\'d3\'da\'b5\'c8\'d3\'da
+\f2  1
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      * 
+\f1 \'cb\'f9\'d2\'d4
+\f2  Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'bc\'f5\'c8\'a5
+\f2  1.
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      *  
+\f1 \'bf\'c9\'d6\'b4\'d0\'d0\'d0\'e8\'d2\'aa\'d6\'b4\'d0\'d0\'c5\'c5\'cb\'fb\'bf\'d8\'d6\'c6\'b5\'c4\'b4\'a6\'c0\'ed
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                     [arrM \cf3 addObject\cf5 :[\cf12 \cb4 NSNumber\cf5 \cb4  \cf3 numberWithInt\cf5 :i]];
+\f0\fs24 \cf0 \
+\
+
+\f2\fs22 \cf5                     \cf3 dispatch_semaphore_signal\cf5 (semaphore);
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \} \cf8 else\cf5  \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                     \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      * 
+\f1 \'d3\'c9\'d3\'da
+\f2  Dispatch Semaphore 
+\f1 \'b5\'c4\'bc\'c6\'ca\'fd\'d6\'b5\'ce\'aa
+\f2  0
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      * 
+\f1 \'d2\'f2\'b4\'cb\'d4\'da\'b4\'ef\'b5\'bd\'d6\'b8\'b6\'a8\'ca\'b1\'bc\'e4\'ce\'aa\'d6\'b9\'b4\'fd\'bb\'fa\'a1\'a3
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7                      */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5                 \}
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \});
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \}
+\f1 \
+\
+     \'d4\'da\'c3\'bb\'d3\'d0 Serial Dispatch Queue \'ba\'cd dispatch_barrier_async \'ba\'af\'ca\'fd\'c4\'c7\'c3\'b4\'b4\'f3\'c1\'a3\'b6\'c8Queue\'d2\'bb\'b2\'bf\'b7\'d6\'b4\'a6\'c0\'ed\'d0\'e8\'d2\'aa\'bd\'f8\'d0\'d0\'c5\'c5\'cb\'fb\'bf\'d8\'d6\'c6\'b5\'c4\'c7\'e9\'bf\'f6\'cf\'c2\'a3\'ac Dispatch Semaphore \'b1\'e3\'bf\'c9\'b7\'a2\'bb\'d3\'d7\'f7\'d3\'c3\'a1\'a3\
+ \
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf13 \cb4 2.12  dispatch_once\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs22 \cf5 \cb4       dispatch_once \'ba\'af\'ca\'fd\'ca\'c7\'b1\'a3\'d6\'a4\'d4\'da\'d3\'a6\'d3\'c3\'b3\'cc\'d0\'f2\'d6\'b4\'d0\'d0\'d6\'d0\'d6\'bb\'d6\'b4\'d0\'d0\'d2\'bb\'b4\'ce\'d6\'b8\'b6\'a8\'b4\'a6\'c0\'ed\'b5\'c4 API\'a3\'ac\'cf\'c2\'c3\'e6\'d5\'e2\'d6\'d6\'be\'ad\'b3\'a3\'b3\'f6\'cf\'d6\'b5\'c4\'d3\'c3\'c0\'b4\'bd\'f8\'d0\'d0\'b3\'f5\'ca\'bc\'bb\'af\'b5\'c4\'d4\'b4\'b4\'fa\'c2\'eb\'bf\'c9\'cd\'a8\'b9\'fd dispatch_once \'ba\'af\'ca\'fd\'bc\'f2\'bb\'af\'a1\'a3\
+               
+\f2 \cf8 static\cf5  \cf8 int\cf5  initialized = \cf8 NO\cf5 ;
+\f0\fs24 \cf0 \
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf5         \cf8 if\cf5  (initialized == \cf8 NO\cf5 ) \{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              * 
+\f1 \'b3\'f5\'ca\'bc\'bb\'af
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7              */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5             initialized = \cf8 YES\cf5 ;
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \}
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf7 // 
+\f1 \'ca\'b9\'d3\'c3
+\f2  dispatch_once 
+\f1 \'ba\'af\'ca\'fd
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf8 static\cf5  \cf9 \cb4 dispatch_once_t\cf5 \cb4  pred;
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \cf11 \cb4 dispatch_once\cf5 \cb4 (&pred, ^\{
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5            \cf7 /*
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             * 
+\f1 \'b3\'f5\'ca\'bc\'bb\'af
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf7             */
+\f0\fs24 \cf0 \
+
+\f2\fs22 \cf5         \});
+\f1 \
+\
+     \'d4\'b4\'b4\'fa\'c2\'eb\'bf\'b4\'c6\'f0\'c0\'b4\'c3\'bb\'d3\'d0\'ca\'b2\'c3\'b4\'b1\'e4\'bb\'af\'a3\'ac\'b5\'ab\'ca\'c7\'cd\'a8\'b9\'fd\'ca\'b9\'d3\'c3 dispatch_once \'ba\'af\'ca\'fd\'a3\'ac\'b8\'c5\'cb\'e3\'e0\'c7\'c2\'f0\'bc\'b4\'ca\'b9\'d4\'d9\'b6\'e0\'cf\'df\'b3\'cc\'cf\'c2\'d6\'b4\'d0\'d0\'a3\'ac\'d2\'b2\'c4\'dc\'b1\'a3\'d6\'a4\'b0\'d9\'b7\'d6\'d6\'ae\'b0\'d9\'b0\'b2\'c8\'ab\'a1\'a3\'d4\'da\'c9\'fa\'b3\'c9\'b5\'a5\'c0\'fd\'b6\'d4\'cf\'f3\'ca\'b1\'ca\'b9\'d3\'c3\'a1\'a3\
+\
+\
+\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs36 \cf13 \cb4 2.12 Dispatch I/O\
+\pard\tx543\pardeftab543\pardirnatural\partightenfactor0
+
+\fs22 \cf5 \cb4         \
+      \'d4\'da\'b6\'c1\'c8\'a1\'b4\'f3\'ce\'c4\'bc\'fe\'ca\'b1\'a3\'ac\'c8\'e7\'b9\'fb\'bd\'ab\'ce\'c4\'bc\'fe\'b7\'d6\'b3\'c9\'ba\'cf\'ca\'ca\'b5\'c4\'b4\'f3\'d0\'a1\'b2\'a2\'ca\'b9\'d3\'c3 Global Dispatch Queue \'b2\'a2\'d0\'d0\'b6\'c1\'c8\'a1\'b5\'c4\'bb\'b0\'a3\'ac\'d3\'a6\'b8\'c3\'bb\'e1\'b1\'c8\'d2\'bb\'b0\'e3\'b5\'c4\'b6\'c1\'c8\'a1\'cb\'d9\'b6\'c8\'bf\'ec\'b2\'bb\'c9\'d9\'a1\'a3\'cf\'d6\'bd\'f1\'b5\'c4 \'ca\'e4\'c8\'eb/\'ca\'e4\'b3\'f6 \'d3\'b2\'bc\'fe\'d2\'d1\'be\'ad\'bf\'c9\'d2\'d4\'d7\'f6\'b5\'bd\'d2\'bb\'b4\'ce\'ca\'b9\'d3\'c3\'b6\'e0\'b8\'f6\'cf\'df\'b3\'cc\'b8\'fc\'bf\'ec\'b5\'d8\'b2\'a2\'c1\'d0\'b6\'c1\'c8\'a1\'c1\'cb\'a1\'a3\'c4\'dc\'ca\'b5\'cf\'d6\'d5\'e2\'d2\'bb\'b9\'a6\'c4\'dc\'b5\'c4\'ca\'c7 Dispatch I/O \'ba\'cd Dispatch Data\'a1\'a3\
+     \'bd\'ab\'ce\'c4\'bc\'fe\'b7\'d6\'b8\'ee\'b3\'c9\'ce\'aa\'d2\'bb\'bf\'e9\'d2\'bb\'bf\'e9\'b5\'d8\'bd\'f8\'d0\'d0\'b6\'c1\'c8\'a1\'b4\'a6\'c0\'ed\'a1\'a3\'b7\'d6\'b8\'ee\'b6\'c1\'c8\'a1\'b5\'c4\'ca\'fd\'be\'dd\'cd\'a8\'b9\'fd\'ca\'b9\'d3\'c3 Dispatch Data \'bf\'c9\'b8\'fc\'ce\'aa\'bc\'f2\'b5\'a5\'b5\'c4\'bd\'f8\'d0\'d0\'bd\'e1\'ba\'cf\'ba\'cd\'b7\'d6\'b8\'ee\'a1\'a3\
+  \
+\
+\
+\
+\
+}
