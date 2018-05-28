@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED9F43D620B64FFA00A7C648 /* CLog.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9F43D520B64FFA00A7C648 /* CLog.m */; };
 		F1D4215A1F5F975C0099F16E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D421591F5F975C0099F16E /* main.m */; };
 		F1D4215D1F5F975C0099F16E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D4215C1F5F975C0099F16E /* AppDelegate.m */; };
 		F1D421601F5F975C0099F16E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F1D4215F1F5F975C0099F16E /* ViewController.m */; };
@@ -20,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED9F43D420B64FFA00A7C648 /* CLog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CLog.h; sourceTree = "<group>"; };
+		ED9F43D520B64FFA00A7C648 /* CLog.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CLog.m; sourceTree = "<group>"; };
+		ED9F43D820B6511800A7C648 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		F1D421551F5F975C0099F16E /* KVO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KVO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1D421591F5F975C0099F16E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F1D4215B1F5F975C0099F16E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -82,10 +86,13 @@
 				F1D4217F1F5FC70D0099F16E /* Book.m */,
 				F1D421811F5FD63C0099F16E /* Nation.h */,
 				F1D421821F5FD63C0099F16E /* Nation.m */,
+				ED9F43D420B64FFA00A7C648 /* CLog.h */,
+				ED9F43D520B64FFA00A7C648 /* CLog.m */,
 				F1D421611F5F975C0099F16E /* Main.storyboard */,
 				F1D421641F5F975C0099F16E /* Assets.xcassets */,
 				F1D421661F5F975C0099F16E /* LaunchScreen.storyboard */,
 				F1D421691F5F975C0099F16E /* Info.plist */,
+				ED9F43D820B6511800A7C648 /* PrefixHeader.pch */,
 				F1D421581F5F975C0099F16E /* Supporting Files */,
 			);
 			path = KVO;
@@ -176,6 +183,7 @@
 				F1D4217D1F5FA35B0099F16E /* Dog.m in Sources */,
 				F1D421771F5FA3410099F16E /* Person.m in Sources */,
 				F1D421801F5FC70D0099F16E /* Book.m in Sources */,
+				ED9F43D620B64FFA00A7C648 /* CLog.m in Sources */,
 				F1D4215A1F5F975C0099F16E /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,6 +306,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/KVO/PrefixHeader.pch";
 				INFOPLIST_FILE = KVO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = XF.KVO;
@@ -309,6 +318,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				GCC_PREFIX_HEADER = "$(SRCROOT)/KVO/PrefixHeader.pch";
 				INFOPLIST_FILE = KVO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = XF.KVO;
@@ -335,6 +345,7 @@
 				F1D4216E1F5F975C0099F16E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

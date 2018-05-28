@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) NSString *name;
 
+@property (assign, nonatomic) float price;
+
 @end

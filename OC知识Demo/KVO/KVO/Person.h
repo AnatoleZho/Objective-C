@@ -11,14 +11,26 @@
 #import "Dog.h"
 #import "Book.h"
 
+typedef struct Info {
+    float height;
+    float weight;
+} PersonInfo;
+
+
+
 @interface Person : NSObject
 
 @property (strong, nonatomic) NSString *name;
 
+@property (assign, nonatomic) NSInteger age;
+
 @property (assign, nonatomic) float money;
+
+@property (assign, nonatomic) PersonInfo info;
+
 
 @property (strong, nonatomic) Dog *dog;
 
-@property (strong, nonatomic) NSArray<Book *> *books;
+@property (strong, nonatomic) NSMutableArray<Book *> *books;
 
 @end

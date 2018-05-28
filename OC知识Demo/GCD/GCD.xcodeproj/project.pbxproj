@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED650EBA20BC107100057AA0 /* GCDReadMe2.rtfd in Resources */ = {isa = PBXBuildFile; fileRef = ED650EB920BC107100057AA0 /* GCDReadMe2.rtfd */; };
+		ED650EC320BC110000057AA0 /* PerformSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = ED650EC220BC110000057AA0 /* PerformSelector.m */; };
 		F16997791F68D31100C2F459 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F16997781F68D31100C2F459 /* main.m */; };
 		F169977C1F68D31100C2F459 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F169977B1F68D31100C2F459 /* AppDelegate.m */; };
 		F169977F1F68D31100C2F459 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F169977E1F68D31100C2F459 /* ViewController.m */; };
@@ -17,6 +19,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED650EB920BC107100057AA0 /* GCDReadMe2.rtfd */ = {isa = PBXFileReference; lastKnownFileType = wrapper.rtfd; path = GCDReadMe2.rtfd; sourceTree = "<group>"; };
+		ED650EC120BC10FE00057AA0 /* PerformSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformSelector.h; sourceTree = "<group>"; };
+		ED650EC220BC110000057AA0 /* PerformSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformSelector.m; sourceTree = "<group>"; };
 		F16997741F68D31100C2F459 /* GCD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GCD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F16997781F68D31100C2F459 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F169977A1F68D31100C2F459 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -45,6 +50,7 @@
 			isa = PBXGroup;
 			children = (
 				F169978E1F68D38900C2F459 /* GCDReadMe.rtfd */,
+				ED650EB920BC107100057AA0 /* GCDReadMe2.rtfd */,
 				F16997761F68D31100C2F459 /* GCD */,
 				F16997751F68D31100C2F459 /* Products */,
 			);
@@ -65,6 +71,8 @@
 				F169977B1F68D31100C2F459 /* AppDelegate.m */,
 				F169977D1F68D31100C2F459 /* ViewController.h */,
 				F169977E1F68D31100C2F459 /* ViewController.m */,
+				ED650EC120BC10FE00057AA0 /* PerformSelector.h */,
+				ED650EC220BC110000057AA0 /* PerformSelector.m */,
 				F16997801F68D31100C2F459 /* Main.storyboard */,
 				F16997831F68D31100C2F459 /* Assets.xcassets */,
 				F16997851F68D31100C2F459 /* LaunchScreen.storyboard */,
@@ -140,6 +148,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED650EBA20BC107100057AA0 /* GCDReadMe2.rtfd in Resources */,
 				F16997871F68D31100C2F459 /* LaunchScreen.storyboard in Resources */,
 				F16997841F68D31100C2F459 /* Assets.xcassets in Resources */,
 				F16997821F68D31100C2F459 /* Main.storyboard in Resources */,
@@ -154,6 +163,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ED650EC320BC110000057AA0 /* PerformSelector.m in Sources */,
 				F169977F1F68D31100C2F459 /* ViewController.m in Sources */,
 				F169977C1F68D31100C2F459 /* AppDelegate.m in Sources */,
 				F16997791F68D31100C2F459 /* main.m in Sources */,
@@ -315,6 +325,7 @@
 				F169978D1F68D31100C2F459 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
