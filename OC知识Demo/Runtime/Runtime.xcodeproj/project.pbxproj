@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		ED802E1D20BCDCDE00680D9A /* ArchiverModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ED802E1C20BCDCDE00680D9A /* ArchiverModel.m */; };
 		F10EFC4A1F652BEE00BD535F /* Cat.m in Sources */ = {isa = PBXBuildFile; fileRef = F10EFC491F652BEE00BD535F /* Cat.m */; };
 		F10EFC4D1F65886300BD535F /* Dog.m in Sources */ = {isa = PBXBuildFile; fileRef = F10EFC4C1F65886300BD535F /* Dog.m */; };
 		F10EFC501F6618D400BD535F /* Student.m in Sources */ = {isa = PBXBuildFile; fileRef = F10EFC4F1F6618D400BD535F /* Student.m */; };
@@ -24,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		ED802E1B20BCDCDD00680D9A /* ArchiverModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArchiverModel.h; sourceTree = "<group>"; };
+		ED802E1C20BCDCDE00680D9A /* ArchiverModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArchiverModel.m; sourceTree = "<group>"; };
 		F10EFC481F652BEE00BD535F /* Cat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cat.h; sourceTree = "<group>"; };
 		F10EFC491F652BEE00BD535F /* Cat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Cat.m; sourceTree = "<group>"; };
 		F10EFC4B1F65886300BD535F /* Dog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dog.h; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				F10EFC4F1F6618D400BD535F /* Student.m */,
 				F10EFC511F6666A300BD535F /* Item.h */,
 				F10EFC521F6666A300BD535F /* Item.m */,
+				ED802E1B20BCDCDD00680D9A /* ArchiverModel.h */,
+				ED802E1C20BCDCDE00680D9A /* ArchiverModel.m */,
 				F10EFC541F6673A400BD535F /* NSObject+Category.h */,
 				F10EFC551F6673A400BD535F /* NSObject+Category.m */,
 				F11B0A781F62D5E500BD35DA /* Main.storyboard */,
@@ -199,6 +204,7 @@
 				F10EFC501F6618D400BD535F /* Student.m in Sources */,
 				F11B0A711F62D5E500BD35DA /* main.m in Sources */,
 				F10EFC4A1F652BEE00BD535F /* Cat.m in Sources */,
+				ED802E1D20BCDCDE00680D9A /* ArchiverModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

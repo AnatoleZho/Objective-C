@@ -18,6 +18,7 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 
+#import "ArchiverModel.h"
 
 @interface ViewController ()<UIAlertViewDelegate>
 
@@ -33,32 +34,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    //使用 Runtime 获取类名
+    // 使用 Runtime 获取类名
     
     Class classPerson = Person.class;
-    //printf("%s\n", classPerson->name)//用这种方法已经不能获取name了 因为OBJC2_UNAVAILABLE
+    // printf("%s\n", classPerson->name)//用这种方法已经不能获取name了 因为OBJC2_UNAVAILABLE
     const char *cname = class_getName(classPerson);
     printf("cname==%s\n", cname);// 输出 cname==Person
     
-    //使用 Runtime 发送消息
+    // 使用 Runtime 发送消息
     [self sendMessageUseRuntime];
     
     //交换方法
     [self exchangeMethod];
     
     /* 类\对象的关联对象 */
-    //给分类添加属性
+    // 给分类添加属性
     [self addPropertyToCategory];
     
-    //给对象添加关联对象
+    // 给对象添加关联对象
     //- (IBAction)buttonAction:(UIButton *)sender
     
-    //动态添加方法
+    // 动态添加方法
     [self dynamicAddMethod];
     
     
-    //字典转模型 KVC 实现
+    // 字典转模型 KVC 实现
     [self dictionaryTransferModel];
+    
+    // 实现对象归档
+    [self archiverModel];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -194,6 +198,19 @@
     NSLog(@"objc==%@", objc.dog.name);
 }
 
+- (void)archiverModel {
+    ArchiverModel *model = [[ArchiverModel alloc] init];
+    model.name = @"西瓜";
+    model.title = @"熟了";
+    model.itemArr = @[@"西瓜", @"西瓜", @"熟了", @"熟了"];
+    
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *filePath = [path stringByAppendingPathComponent:@"archiverModel.data"];
+    [NSKeyedArchiver archiveRootObject:model toFile:filePath];
+    
+    ArchiverModel *unarchiverModel = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    NSLog(@"unarchiverModel.itemArr ==== %@", unarchiverModel.itemArr);
+}
 @end
 
 @implementation UIImage (image)
