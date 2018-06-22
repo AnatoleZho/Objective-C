@@ -10,6 +10,7 @@
 
 @interface NSObject (Category)
 
+@property (nonatomic, assign) NSInteger type;
 + (instancetype)modelWithDict:(NSDictionary *)dict;
-
+- (void)method;
 @end

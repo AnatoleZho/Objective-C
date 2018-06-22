@@ -9,7 +9,19 @@
 #import "NSObject+Category.h"
 #import <objc/runtime.h>
 
+// 为变量配置固定地址
+static void *typeKey = &typeKey;
+
 @implementation NSObject (Category)
+
+// type 的 Setter 方法, 第三个参数: 基础数据类型 加 @(type)
+- (void)setType:(NSInteger)type {
+    objc_setAssociatedObject(self, &typeKey, @(type), OBJC_ASSOCIATION_ASSIGN);
+}
+
+- (NSInteger)type {
+    return [objc_getAssociatedObject(self, &typeKey) integerValue];
+}
 
 + (instancetype)modelWithDict:(NSDictionary *)dict {
     id objc = [[self alloc] init];

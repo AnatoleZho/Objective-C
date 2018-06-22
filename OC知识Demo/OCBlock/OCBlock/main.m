@@ -20,7 +20,6 @@ int main(int argc, const char * argv[]) {
         const char *fmt = "val = %d\n";
         void (^blk)(void) = ^{
             printf(fmt, val);
-            
         };
         
         val = 2;
@@ -40,6 +39,7 @@ int main(int argc, const char * argv[]) {
         
         
         __block int valB = 0;
+        // 此时调用 copy 和 不调用是没有区别的
         void (^blkB)(void) = [^{++valB;} copy];
         
         ++valB;
@@ -49,7 +49,7 @@ int main(int argc, const char * argv[]) {
         NSLog(@"valB==%d",valB);
         /*
          使用 __block 变量的 Block 持有 __block 变量，如果 Block 被废弃，它所持有的 __block 变量也就被释放。
-         通过上面的例子，无论实在 Block 语法中、Block 语法外使用 __block 变量，还是 __block 变量配置在堆上或栈上，都可以顺序的访问同一个 __block 变量。
+         通过上面的例子，无论是在 Block 语法中、Block 语法外使用 __block 变量，还是 __block 变量配置在堆上或栈上，都可以顺序的访问同一个 __block 变量。
          */
         
         
@@ -83,7 +83,7 @@ int main(int argc, const char * argv[]) {
         blkC([[NSObject alloc] init]);
         blkC([[NSObject alloc] init]);
         /*
-         变量作用域结束的同事，变量 arrayM 被废弃，其强引用失效，因此赋值给变量 arrayM 的 NAMutableArray 类的对象必定被释放并废弃。但是该代码运行正常。
+         变量作用域结束的同时，变量 arrayM 被废弃，其强引用失效，因此赋值给变量 arrayM 的 NAMutableArray 类的对象必定被释放并废弃。但是该代码运行正常。
              arrayM count = 1
              arrayM count = 2
              arrayM count = 3
@@ -168,7 +168,10 @@ int main(int argc, const char * argv[]) {
             // 使用 __block 变量来避免循环引用
         
         id otherO = [[OtherObject alloc] init];
+
         [otherO execBlock];
+//        otherO = nil;
+
         /*
          该源代码没有引起循环引用。但是如果不调用 execBlock 实例方法，即不执行赋值给成员变量 blk_ 的 Block, 便会循环引用并引起内存泄漏。在生成并持有 OtherObject 类对象的状态下会引起以下循环引用：
               1. OtherObject 类对象持有 Block
@@ -191,7 +194,7 @@ int main(int argc, const char * argv[]) {
         /*
          使用 __block 变量避免循环引用的方法 和 使用 __weak 修饰符及 __unsage_unretained 修饰符避免循环引用的方法的比较：
           1. 通过 __block 变量可控制对象的持有期间
-          2. 在不能使用 __weak 修饰符的环境中使用 __unsafe_unretained 修饰符即可（不辞担心悬垂指针）
+          2. 在不能使用 __weak 修饰符的环境中使用 __unsafe_unretained 修饰符即可（不必担心悬垂指针）
             在执行 Block 时可以动态的决定是否将 nil 或其他对象赋值在 __block 变量中
          
          使用 __block 变量的缺点如下：

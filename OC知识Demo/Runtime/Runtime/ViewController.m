@@ -21,7 +21,7 @@
 #import "ArchiverModel.h"
 
 @interface ViewController ()<UIAlertViewDelegate>
-
+- (void)add;
 @end
 
 @implementation ViewController
@@ -63,6 +63,23 @@
     
     // 实现对象归档
     [self archiverModel];
+    
+    // 为分类 (Category) 添加属性
+    /*
+     分类不能声明成员: 实际上声明属性是没有问题的,没有自动生成成员变量,所以只是不能赋值和取值操作
+     由于可以利用 runtime 添加动态属性,所以可以为分类添加属性
+     
+     4.分类的执行优先级
+     4.1在本类和分类有相同的方法时，优先调用分类的方法再调用本类的方法。
+     4.2如果有两个分类，他们都实现了相同的方法，如何判断谁先执行？分类执行顺序可以通过targets,Build Phases,Complie Source进行调节，注意执行顺序是从上到下的。（只有两个相同方法名的分类）
+     
+     5.分类(category)和类扩展(extension)的关系
+     5.1.类扩展(extension）是category的一个特例，有时候也被称为匿名分类。他的作用是为一个类添加一些私有的成员变量和方法。
+     5.2.类扩展能写点啥？和分类不同，类扩展即可以声明成员变量又可以声明方法。
+     5.3.类扩展可以定义在.m文件中，这种扩展方式中定义的变量都是私有的，也可以定义在.h文件中，这样定义的代码就是共有的，类扩展在.m文件中声明私有方法是非常好的方式。
+     */
+    
+    [self addPropertyToNSObjectCategory];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -82,6 +99,8 @@
    //创建 Person 对象
     Person *p = [[Person alloc] init];
 
+    p.name = @"🥒";
+    NSLog(@"%@", p.name);
     //调用对象方法
     [p eat];
     
@@ -194,6 +213,11 @@
     }];
     
     Item *objc = [Item modelWithDict:dict];
+    // 动态添加属性 字符串赋值给 NSInteger 类型
+    objc.age = @"🍉";
+    objc.type = @"🍉";
+    NSLog(@"age 🍉 == %@", objc.age);
+    NSLog(@"type 🍉 == %@", objc.type);
     NSLog(@"objc==%@", objc.name);
     NSLog(@"objc==%@", objc.dog.name);
 }
@@ -210,6 +234,12 @@
     
     ArchiverModel *unarchiverModel = [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
     NSLog(@"unarchiverModel.itemArr ==== %@", unarchiverModel.itemArr);
+}
+
+- (void)addPropertyToNSObjectCategory {
+    NSObject *objc = [[NSObject alloc] init];
+    objc.type = 9999;
+    NSLog(@"type 🍉 == %ld", (long)objc.type);
 }
 @end
 

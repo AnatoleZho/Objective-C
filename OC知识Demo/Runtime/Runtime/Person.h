@@ -16,3 +16,10 @@
 + (void)run;
 
 @end
+
+@interface Person ()
+
+@property (nonatomic, strong) NSString *name;
+- (void)write;
+
+@end

@@ -8,13 +8,25 @@
 
 #import "Person.h"
 
+@interface Person ()
+
+@property (nonatomic, assign) NSInteger age;
+
+- (void)read;
+
+@end
+
+
 @implementation Person
 
 - (void)eat {
+    self.age = @"🥕";
+    NSLog(@"%@", self.age);
     NSLog(@"调用了对象方法：eat");
 }
 
 + (void)run {
+
     NSLog(@"调用了类方法： run");
 }
 

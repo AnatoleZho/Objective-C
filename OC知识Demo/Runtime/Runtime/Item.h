@@ -11,6 +11,8 @@
 
 @interface Item : NSObject
 
+@property (nonatomic, assign) NSInteger age;
+
 @property (strong, nonatomic) NSString *name;
 
 @property (strong, nonatomic) NSString *money;

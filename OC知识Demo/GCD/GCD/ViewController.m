@@ -52,7 +52,7 @@ static NSInteger _tickets;
     // Do any additional setup after loading the view, typically from a nib.
     
     // 标准 GCD 使用示例
-    [self gcdTypicalExample];
+//    [self gcdTypicalExample];
     
     //死锁 （DeadLock）
 //    [self deadLock1];
@@ -78,6 +78,10 @@ static NSInteger _tickets;
     
     // 使用 GCD 同步串行队列代替 锁
     [self useSyncSerialQueueReplaceLock];
+    
+    
+    //  同时存在A,B,C,D四个网络请求，要求同时发起四个网络请求，当四个网络请求都返回数据以后再处理事件E。
+    [self requestFourNetwork];
 }
 
 // 标准 GCD 使用示例
@@ -228,5 +232,62 @@ static NSInteger _tickets;
                 break;
             }
     }
+}
+
+- (void)requestFourNetwork {
+    /*
+     由于队列在处理网络请求时将”发送完一个请求”作为事件完成的标记（此时还未获得网络请求返回数据），所以在这里需要用信号量进行控制，在执行dispatch_group_notify前发起信号等待（4次信号等待，分别对应每个队列的信号通知），在每个队列获取到网络请求返回数据时发出信号通知。这样就能完成需求中的要求。
+     */
+    // 需要记录请求成功或失败
+    __block BOOL openFlag = NO;
+    __block BOOL userInfoFlag = NO;
+    __block BOOL userSysFlag = NO;
+    
+    // 创建信号量/
+    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
+    // 创建全局并行/
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_group_t group = dispatch_group_create();
+    dispatch_group_async(group, queue, ^{
+        NSLog(@"处理事件A");
+        for (int i = 0; i<5; i++) {
+            NSLog(@"打印AA %d",i);
+        }
+        NSLog(@"处理事件 A 完成");
+        dispatch_semaphore_signal(semaphore);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@"处理事件B");
+        for (int i = 0; i<5; i++) {
+            NSLog(@"打印BB %d",i);
+        }
+        NSLog(@"处理事件 B 完成");
+        dispatch_semaphore_signal(semaphore);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@"处理事件C");
+        for (int i = 0; i<5; i++) {
+            NSLog(@"打印CC %d",i);
+        }
+        NSLog(@"处理事件 C 完成");
+        dispatch_semaphore_signal(semaphore);
+    });
+    dispatch_group_async(group, queue, ^{
+        NSLog(@"处理事件D");
+        for (int i = 0; i<5; i++) {
+            NSLog(@"打印DD %d",i);
+        }
+        NSLog(@"处理事件 D 完成");
+        dispatch_semaphore_signal(semaphore);
+    });
+    
+    dispatch_group_notify(group, queue, ^{
+        // 四个请求对应四次信号等待/
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        NSLog(@"处理事件E");
+    });
 }
 @end
