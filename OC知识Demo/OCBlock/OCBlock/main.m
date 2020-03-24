@@ -10,11 +10,15 @@
 
 #import "MyObject.h"
 #import "OtherObject.h"
+
+static NSInteger num3 = 300;
+NSInteger num4 = 3000;
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
    
         
-        // 1.Block 截获自动变量值；
+        // 1.Block 截获自动变量值, 值截获，在block里如果修改变量val的值也是无效的；
         int dmy = 256;
         int val = 10;
         const char *fmt = "val = %d\n";
@@ -26,6 +30,42 @@ int main(int argc, const char * argv[]) {
         fmt = "These values were changed. val = %d\n";
         
         blk();
+        
+
+        NSMutableArray *arrM = [NSMutableArray arrayWithObjects:@"1", @"2", nil];
+        void(^block)(void) = ^{
+            NSLog(@"%@", arrM);
+            [arrM addObject:@"4"];
+        };
+        
+        [arrM addObject:@"3"];
+        
+        arrM = nil;
+        NSLog(@"%@", arrM);
+
+        block();
+        // 局部对象变量也是一样，截获的是值，而不是指针，在外部对其置为nil，对block没有影响，而对该对象调用方法会有影响
+        
+        // 局部静态变量截获，是指针截获。
+        static NSInteger num = 3;
+        NSInteger(^blockA)(NSInteger) = ^NSInteger(NSInteger n){
+            return n * num;
+        };
+        
+        num = 1;
+        NSLog(@"%zd", blockA(2));
+        // 输出为 2， 意味着 num = 1 这里修改 num 的值是有效的，即是指针截获，同样，在block里去修改变量num，也是有效的
+        
+        // 全局变量，静态全局变量截获：不截获，直接取值
+        __block NSInteger num5 = 30000;
+        void(^blockB)(void) = ^{
+            NSLog(@"%d", val); //局部变量
+            NSLog(@"%zd", num); // 局部静态变量
+            NSLog(@"%zd", num4); // 全局变量
+            NSLog(@"%zd", num3); // 全局静态变量
+            NSLog(@"%zd", num5); // __block修饰变量
+        };
+        blockB();
         
         // 2.使用 __block 说明符的自动变量可在 Block 中赋值
         // __block 说明符更准确的表述方式是：__block 存储域类说明符（__block storage-class-specifier）
@@ -54,7 +94,7 @@ int main(int argc, const char * argv[]) {
         
         
         // 3. 捕获对象
-        /* 以下源代码生成并持有 NSMutableArray 类的对象，由于附有 __strong 修饰符的赋值目标变量的作用域立即结束，因此对象被立即释放并废弃 */
+        /* 以下源代码生成并持有 NSMutableArray 类的对象，由于附有 __strong 修饰符的赋值目标变量的作用域立即结束，因此对象被立即释放并废弃*/
         {
             id array = [[NSMutableArray alloc] init];
         }
